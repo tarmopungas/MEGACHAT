@@ -1,4 +1,8 @@
 Kasutajaliides
+* liides peab terve sisselogitud aja jooksul kuulama serverilt tulevaid
+  sõnumeid, kui server saadab uue sõnumi, uuendatakse puhverdatud sõnumite
+  faili, kui uus sõnum kätte saadakse, saadab serverile tagasi ok
+
 * avaaken
  * login nupp
   * viib login aknasse
@@ -36,13 +40,48 @@ Kasutajaliides
   * kui on korras siis saab tagasi listi sõpradest ja vestlustest kus
     kasutaja sees on
  * sisaldab vestluste listi, vestluse peale vajutades viib vestlusesse
- * sisaldab sõprade listi, sõbra peale vajutades viib vestlusesse temaga
+ * sisaldab sõprade listi, sõbra peale vajutades viib privaatvestlusesse temaga
+ * sisaldab listi vestlustest, kus on uued sõnumid tulnud peale viimast
+   sisse logimist
+ * sõbra lisamine, tuleb aken kuhu tuleb sõbra kasutajanimi kirjutada, see
+   saadetakse koos võtmega serverile ja lisatakse sõprade listi
+ * vestluse alustamine, tuleb aken, kuhu kirjutada vestluse nimi, saadetakse
+   serverisse koos võtmega, kasutaja suunatakse selle vestluse aknasse
+
+* vestlusaken (privaatvestlus on sama aga inimeste lisamine puudub)
+ * avamisel vaatab, kas vestlus on puhvris olemas, kui ei ole, siis saadab serverile
+   vestluse requesti vestluse id ja kasutaja võtmega
+  * kui saab tagasi vea, siis suunatakse ümber login aknasse (see peaks
+    tähendama et võti on aegunud)
+  * kui on korras siis kuvatakse vestlus
+ * vastlusaknas on:
+  * 20(?) viimast sõnumit koos autorite kasutajanimedega, üles kerides saadetakse serverisse request uute
+    sõnumite saamiseks
+  * lahter kuhu saab sõnumi kirjutada, "saada" nupp, millele vajutades
+    saadetakse sõnum koos võtmega serverisse, kui tuleb ok tagasi siis
+    lisatakse server ka kliendis vestluse lõppu
+  * nupp manuse saatmiseks, selleks kirjutada sõnumi lahtrisse tee
+    failisüsteemis manuseni, siis kontrollitakse kas fail leidub ning siis
+    saadetakse fail serverisse, vestlusesse uue sõnumi kohale ilmub nupp, kust
+    faili alla laadida
+  * nupp inimeste lisamiseks, avab lahtri, kuhu saab kirjutada sõbra
+    kasutajanimi, sõbra kasutajanimi saadetakse võtmega serverisse, server
+    kontrollib, kas sõber on sõprade listis
 
 Server
 * andmed:
  * vestlused tekstifailidena
+  * siin on iga tekstifaili nimi selle vestluse id, tekstifailis on mingi
+    protokolliga kõik sõnumid koos kasutajanimedega ajalises järjestuses
+  * samas kaustas on ka manused kõigi vestluste seest koos vestluse id ja
+    sõnumi numbriga, kust manus pärit on
  * kasutajate andmed andmebaasisi/tekstifailina
- * list kehtivatest võtmetest
+  * list kasutaja sõpradest
+  * list kasutaja vestluste id-dest
+  * kasutaja salasõna räsi
+  * list vestlustest, kus on uusi sõnumeid tulnud peale välja logimist
+ * list kehtivatest võtmetest, siia jäätakse meelde ka kliendi asukoht,
+   kuhu sõnumeid saata kuni klient on sisse logitud
 
 * mingi skript mis iga mingi aja tagant vaatab võtmeid ja kustutab aegunud
   võtmed ära
@@ -74,3 +113,25 @@ Server
 * kodulehe handler
  * võtab sisse võtme
  * kontrollib võtmete failist, kas võti kehtib
+ * saadab tagasi kasutaja sõprade listi, vestluste listi ja lugemata
+   vestluste listi
+
+* uue sõnumi handler
+ * võtab sisse sõnumi, vestluse id ja võtme, kontrollib võtme kehtivust ja 
+   et see kasutaja on vestluses sees, lisab siis sõnumi vestlusele jurude
+ * saadab kõigile kasutajatele, kes on vestluses sees ja kellel on võtmete
+   failis aktiivne võti, sõnumi, kui ok sõnumit vastu ei tule, lisada sõnum
+   profiili juures olevasse vestluste listi ning eemaldada kasutaja võti
+   võtmete failist (klient on kinni pandud)
+  * neile, kes pole sisse logitud, lisatakse sõnum profiili juures olevasse
+    lugemata vestluste listi
+
+* vestluse handler
+ * võtab sisse vestluse id ja võtme
+ * kontrollib võtme kehtivust ja kasutaja vestluses olekut
+ * saadab tagasi 20 viimast sõnumit vestlusest
+
+* uute sõnumite handler
+ * võtab sisse vestluse id ja võtme ja esimese sõnumi numbri
+ * kontrollib võtme kehtivust ja kasutaja vestluses olekut
+ * saadab tagasti 20 sõnumit alustades sisse saadud sõnumi numbrist

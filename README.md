@@ -1,0 +1,2 @@
+# MEGACHAT
+Terminalipõhine vestlusrakendus vestlusruumide ja privaatvestlustega

@@ -1,0 +1,14 @@
+Üldine süsteem:
+* spetsifikatsiooni kirjutamine - Joosep, pooleli
+Kasutajaliides:
+* põhimõtte välja mõtlemine - ?, pole alustatud
+* avaaken - ?, pole alustatud
+* login aken - ?, pole alustatud
+* registreerumisaken - ?, pole alustatud
+* koduleht - ?, pole alustatud
+Server:
+* võtmete kustutamisskript - ?, pole alustatud
+* kuulaja - ?, pole alustatud
+* login handler - ?, pole alustatud
+* register handler - ?, pole alustatud
+* kodulehe handler - ?, pole alustatud

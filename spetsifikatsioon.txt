@@ -86,7 +86,11 @@ Server
 * mingi skript mis iga mingi aja tagant vaatab võtmeid ja kustutab aegunud
   võtmed ära
 
+* servermain
+ * avab kuulaja lõimed
+
 * kuulaja
+ * koosneb mitmest lõimest
  * Kuulab mingit serveri porti, saab sealt sõnumeid kliendilt ja request
    typei järgi edastab need vastavatele sisemistele funktsioonidele, ootab
    sisemiselt funktisoonilt vastust, saadab selle kliendile tagasi

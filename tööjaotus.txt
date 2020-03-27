@@ -1,5 +1,5 @@
 Üldine süsteem:
-* spetsifikatsiooni kirjutamine - Joosep, pooleli
+* spetsifikatsiooni kirjutamine - Joosep, suht valmis
 Kasutajaliides:
 * põhimõtte välja mõtlemine - ?, pole alustatud
 * avaaken - ?, pole alustatud
@@ -8,7 +8,7 @@ Kasutajaliides:
 * koduleht - ?, pole alustatud
 Server:
 * võtmete kustutamisskript - ?, pole alustatud
-* kuulaja - ?, pole alustatud
-* login handler - ?, pole alustatud
+* kuulaja - Joosep, valmis
+* login handler - Joosep, pooleli
 * register handler - ?, pole alustatud
 * kodulehe handler - ?, pole alustatud

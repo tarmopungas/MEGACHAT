@@ -1,0 +1,76 @@
+Kasutajaliides
+* avaaken
+ * login nupp
+  * viib login aknasse
+ * registreeri nupp
+  * viib registreerimisaknasse
+ * unustasin salasõna(?)
+
+* login aken
+ * lahtrid kasutajanime ja salasõna jaoks, nupp "logi sisse"
+ * nupu vajutamisel:
+  * kontrollitakse et lahtrid on täidetud, kui ei siis tuleb kasutajale
+    teade et täida lahtrid
+  * saadetakse salasõna räsifunktsiooni (saab räsi tagasi)
+  * saadetakse kasutajanimi ja räsi serverile login requestina, vastu tuleb:
+   * kasutajanime ei leidu v salasõna on vale, siis peab kasutaja andmeid
+     muutma
+   * kõik on korras, serverilt sadud võti salvestatakse, kasutaja suunatakse oma kodulehele
+
+* registreerimisaken
+ * lahtrid kasutajanime ja salasõna jaoks, nupp "registreeri"
+ * nupu vajutamisel:
+  * kontrollitakse et lahtrid on täidetud, vajadusel ka lisapiirangud
+    salasõnale vms, kui ei siis tuleb kasutajale teade et täida lahtrid
+  * saadetakse salasõna räsifunktsiooni (saab räsi tagasi)
+  * saadetakse kasutajanimi ja räsi serverile register requestina, vastu tuleb:
+   * kasutajanimi on juba olemas, siis peab kasutaja kasutajanime muutma ja
+     uuesti saatma
+   * kõik on korras, kasutaja suunatakse login aknasse
+
+* koduleht
+ * avamisel saadab serverile vestluste ja sõprade nimekirja requesti koos
+   oma võtmega
+  * kui saab tagasi vea, siis suunatakse ümber login aknasse (see peaks
+    tähendama et võti on aegunud)
+  * kui on korras siis saab tagasi listi sõpradest ja vestlustest kus
+    kasutaja sees on
+ * sisaldab vestluste listi, vestluse peale vajutades viib vestlusesse
+ * sisaldab sõprade listi, sõbra peale vajutades viib vestlusesse temaga
+
+Server
+* andmed:
+ * vestlused tekstifailidena
+ * kasutajate andmed andmebaasisi/tekstifailina
+ * list kehtivatest võtmetest
+
+* mingi skript mis iga mingi aja tagant vaatab võtmeid ja kustutab aegunud
+  võtmed ära
+
+* kuulaja
+ * Kuulab mingit serveri porti, saab sealt sõnumeid kliendilt ja request
+   typei järgi edastab need vastavatele sisemistele funktsioonidele, ootab
+   sisemiselt funktisoonilt vastust, saadab selle kliendile tagasi
+
+* login handler
+ * võtab sisse kasutajanime ja salasõna räsi
+ * kontrollib, kas kasutaja on olemas
+ * kontrollib, kas salasõna räsi kattub
+  * kui midagi on valesti, saadab kliendile tagasi vea
+  * kui on korras, siis:
+   * genereerib kasutajale võtme
+   * salvestab võtme võtmete faili kasutajanimega ja kellaajaga (võti peaks
+     arvatavasti ainult mingi kindla aja töötama, v siis mingi kindel aeg
+     viimasest kasutamisest)
+   * saadab võtme tagasi kliendi suunas
+
+* register handler
+ * võtab sisse kasutajanime ja salasõna räsi
+ * kontrollib, kas kasutaja on olemas
+  * kui jah, siis saadab vea tagasi
+  * kui ei, siis salvestab kasutajanime ja räsi ning saadab tagasi et on
+    korras
+
+* kodulehe handler
+ * võtab sisse võtme
+ * kontrollib võtmete failist, kas võti kehtib

@@ -10,8 +10,6 @@ Kasutajapoolne funktsionaalsus:
 * Saab otsida sõnumeid märksõna, saatja või aja põhjal üle kõigi sõnumite (neis vestlustes, kus sa sees oled)
 
 Ehitus:
-* Kasutaja peab sisse logima ning tema userID küljes on kõik
-  tema sõbrad ja vestlused
+* Kasutaja peab sisse logima ning tema userID küljes on kõik tema sõbrad ja vestlused
 * Kestluseid ja kasutajate andmeid hoitakse keskserveris
-* Kasutaja arvutis olev klient hoiab puhvris sisselogitud kasutaja
-  kõigist vestlustest mõistliku koguse kõige uuemaid sõnumeid (nt ~100 sõnumit?)
+* Kasutaja arvutis olev klient hoiab puhvris sisselogitud kasutaja kõigist vestlustest mõistliku koguse kõige uuemaid sõnumeid (~100 sõnumit)

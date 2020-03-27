@@ -6,9 +6,8 @@ Kasutajapoolne funktsionaalsus:
 * Saab luua vestlusruume ning sinna sõpru kutsuda
 * Iga sõbraga on privaatvestlus
 * Igasse vestlusesse saab ka manuseid saata (pilte ja muid faile)
-* Kogu igat vestlust on võimalik alla laadida eraldi
-* Saab otsida sõnumeid märksõna, saatja või aja põhjal üle kõigi
-  vestluste sõnumite, kus sa sees oled
+* Igat vestlust on võimalik alla laadida eraldi
+* Saab otsida sõnumeid märksõna, saatja või aja põhjal üle kõigi sõnumite (neis vestlustes, kus sa sees oled)
 
 Ehitus:
 * Kasutaja peab sisse logima ning tema userID küljes on kõik

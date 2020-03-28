@@ -75,6 +75,30 @@ Kasutajaliides
     kasutajanimi, sõbra kasutajanimi saadetakse võtmega serverisse, server
     kontrollib, kas sõber on sõprade listis
 
+* Käsurea kasutus
+  * Funktsionaalsus
+   * Kasutajad lisavad sõpru ja liiklevad vestlusprogrammis erinevate käskudega.
+   * Käskudel on eesliited ("\") , et neid paremini tuvastada.
+   * Kui sõnum algab eesliitega, siis seda vestlusruumi ei saadeta ja
+     sõnumite keskel esinevad eesliited ignoreeritakse.
+   * Igal ruumil on unikaalsed käsud
+
+  * Käsud:
+   Alati kättesaadavad:
+    * /info		- Kuvatakse info kõigi käskude kohta
+
+   Vestlusruumis: 
+    * /addfriend ...	- Lisab antud nimega isiku sõbralisti
+    * /rmfriend ...	- Eemaldab antud nimega isiku sõbralisti
+    * /join ...		- Liitub antud ruumiga
+    * /leave		- Lahkub ruumist, kus kasutaja on
+
+   Logimine:
+    * /login 		- Saadab serverile räsifunktsiooni sisse logimiseks (args[0] = username, args[1] = password)
+    * /logout		- Aktiivse kasutajaga logitakse serverist välja
+    * /changepw 	- Kasutaja saab parooli vahetada (args[0] = old_pw, args[1] = new_pw)
+    * /register		- Loob uue kasutaja andmebaasi (args[0] = new_username, args[1] = new_password)
+
 Server
 * andmed:
  * vestlused tekstifailidena
@@ -147,3 +171,4 @@ Server
  * võtab sisse vestluse id ja võtme ja esimese sõnumi numbri
  * kontrollib võtme kehtivust ja kasutaja vestluses olekut
  * saadab tagasti 20 sõnumit alustades sisse saadud sõnumi numbrist
+

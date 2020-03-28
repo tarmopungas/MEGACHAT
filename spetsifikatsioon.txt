@@ -3,6 +3,13 @@ Kasutajaliides
   sõnumeid, kui server saadab uue sõnumi, uuendatakse puhverdatud sõnumite
   faili, kui uus sõnum kätte saadakse, saadab serverile tagasi ok
 
+* klientmain
+ * avab suhtleja
+ * maini vahendusel käib erinevate akende vahel navigeerimine
+
+* suhtleja
+ * saadab sõnumeid ja võtab vastu serverilt, eraldi lõime
+
 * avaaken
  * login nupp
   * viib login aknasse
@@ -90,7 +97,8 @@ Server
  * avab kuulaja lõimed
 
 * kuulaja
- * koosneb mitmest lõimest
+ * koosneb mitmest lõimest, üks lõim on ühe kliendi küljes nii kaua kuni
+   klient ühenduse katkestab ning võtab pidevalt sõnumeid vastu
  * Kuulab mingit serveri porti, saab sealt sõnumeid kliendilt ja request
    typei järgi edastab need vastavatele sisemistele funktsioonidele, ootab
    sisemiselt funktisoonilt vastust, saadab selle kliendile tagasi

@@ -1,0 +1,12 @@
+Klient-Server suhtluse protokoll:
+* request sõnumid:
+ * kõigepealt request type, 4 baidine integer (ehk tavaline integer)
+ * siis kõik edastatavad integer väärtused, igaüks 4 baiti, kogus on
+   määratud request typeiga
+ * siis kõik edastatavad string väärtused, igaühel on esimese 4 baidi sees
+   integerina stringi pikkus, millele järgneb nii pikk string, stringide
+   kogus on määratud requesttypeiga
+ * ehk näiteks kui request type 1 on registreerimisrequest, kus tahetakse
+   edastada kasutajanimi "murakas" ja salasõna räsi "7329", siis näeb request
+   selline välja: |1|7329|7|mura|kas|, kus igas püstkriipsude vahes on 4
+   baiti (viimases 3 kuna tähed võtavad igaüks 1 baidi

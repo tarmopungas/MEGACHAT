@@ -1,7 +1,7 @@
 Kasutajaliides
 * liides peab terve sisselogitud aja jooksul kuulama serverilt tulevaid
-  sõnumeid, kui server saadab uue sõnumi, uuendatakse puhverdatud sõnumite
-  faili, kui uus sõnum kätte saadakse, saadab serverile tagasi ok
+  sõnumeid. Kui server saadab uue sõnumi, uuendatakse puhverdatud sõnumite
+  faili. Kui uus sõnum kätte saadakse, saadab serverile tagasi ok.
 
 * klientmain
  * avab suhtleja
@@ -61,8 +61,8 @@ Kasutajaliides
   * kui saab tagasi vea, siis suunatakse ümber login aknasse (see peaks
     tähendama et võti on aegunud)
   * kui on korras siis kuvatakse vestlus
- * vastlusaknas on:
-  * 20(?) viimast sõnumit koos autorite kasutajanimedega, üles kerides saadetakse serverisse request uute
+ * vestlusaknas on:
+  * 20 viimast sõnumit koos autorite kasutajanimedega, üles kerides saadetakse serverisse request uute
     sõnumite saamiseks
   * lahter kuhu saab sõnumi kirjutada, "saada" nupp, millele vajutades
     saadetakse sõnum koos võtmega serverisse, kui tuleb ok tagasi siis
@@ -78,7 +78,7 @@ Kasutajaliides
 * Käsurea kasutus
   * Funktsionaalsus
    * Kasutajad lisavad sõpru ja liiklevad vestlusprogrammis erinevate käskudega.
-   * Käskudel on eesliited ("\") , et neid paremini tuvastada.
+   * Käskudel on eesliited ("/"), et neid paremini tuvastada.
    * Kui sõnum algab eesliitega, siis seda vestlusruumi ei saadeta ja
      sõnumite keskel esinevad eesliited ignoreeritakse.
    * Igal ruumil on unikaalsed käsud
@@ -154,7 +154,7 @@ Server
 
 * uue sõnumi handler
  * võtab sisse sõnumi, vestluse id ja võtme, kontrollib võtme kehtivust ja 
-   et see kasutaja on vestluses sees, lisab siis sõnumi vestlusele jurude
+   et see kasutaja on vestluses sees, lisab siis sõnumi vestlusele juurde
  * saadab kõigile kasutajatele, kes on vestluses sees ja kellel on võtmete
    failis aktiivne võti, sõnumi, kui ok sõnumit vastu ei tule, lisada sõnum
    profiili juures olevasse vestluste listi ning eemaldada kasutaja võti

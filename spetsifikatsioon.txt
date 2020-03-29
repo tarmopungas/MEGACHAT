@@ -3,12 +3,15 @@ Kasutajaliides
   sõnumeid. Kui server saadab uue sõnumi, uuendatakse puhverdatud sõnumite
   faili. Kui uus sõnum kätte saadakse, saadab serverile tagasi ok.
 
-* klientmain
- * avab suhtleja
+* klientmain (ChatClient)
+ * avab ReadThreadi ja WriteThreadi
  * maini vahendusel käib erinevate akende vahel navigeerimine
 
-* suhtleja
- * saadab sõnumeid ja võtab vastu serverilt, eraldi lõime
+* ReadThread
+ * loeb serverist sisendi ja väljastab selle konsooli
+
+* WriteThread
+ * loeb kasutaja sisendi ja edastab selle serverile
 
 * avaaken
  * login nupp

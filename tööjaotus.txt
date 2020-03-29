@@ -1,6 +1,9 @@
 Üldine süsteem:
 * spetsifikatsiooni kirjutamine - Joosep, suht valmis
 Kasutajaliides:
+* klientmain (ChatClient) – Tarmo, valmis
+* ReadThread – Tarmo, valmis
+* WriteThread – Tarmo, valmis
 * põhimõtte välja mõtlemine - ?, pole alustatud
 * avaaken - ?, pole alustatud
 * login aken - ?, pole alustatud

@@ -11,5 +11,5 @@ Kasutajapoolne funktsionaalsus:
 
 Ehitus:
 * Kasutaja peab sisse logima ning tema userID küljes on kõik tema sõbrad ja vestlused
-* Kestluseid ja kasutajate andmeid hoitakse keskserveris
+* Vestluseid ja kasutajate andmeid hoitakse keskserveris
 * Kasutaja arvutis olev klient hoiab puhvris sisselogitud kasutaja kõigist vestlustest mõistliku koguse kõige uuemaid sõnumeid (~100 sõnumit)

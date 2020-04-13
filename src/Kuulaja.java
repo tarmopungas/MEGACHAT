@@ -22,10 +22,15 @@ public class Kuulaja implements Runnable{
                  DataOutputStream dout = new DataOutputStream(out)){
                 // ootab uusi requeste
                 while (true) {
-                    int requestType = din.read();
-                    int requestSize = din.read();
+                    int requestType = din.readInt();
+                    if (requestType == -1){
+                        break;
+                    }
+                    //System.out.printf("Lugesin req typei %d\n", requestType);
+                    int requestSize = din.readInt();
+                    //System.out.printf("Lugesin req sizei %d\n", requestSize);
                     byte[] request = new byte[requestSize];
-                    din.read(request, 0, requestSize);
+                    din.readNBytes(request, 0, requestSize);
                     Integer errorCode = 0;
                     byte[] output = null;
                     switch (requestType) {
@@ -39,14 +44,16 @@ public class Kuulaja implements Runnable{
                             // kliendile saadetakse "mittedefineeritud request type"
                             errorCode = 1;
                     }
-                    dout.write(errorCode);
+                    dout.writeInt(errorCode);
                     if (errorCode == 0 && output != null) {
-                        dout.write(output.length);
+                        dout.writeInt(output.length);
                         dout.write(output);
+                    } else {
+                        dout.writeInt(0);
                     }
                 }
             } catch (IOException e) {
-                throw new RuntimeException("Pordilugemine ei tööta");
+                // Klient sulges ühenduse
             }
         }
     }

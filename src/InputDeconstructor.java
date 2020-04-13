@@ -25,12 +25,14 @@ public class InputDeconstructor {
             intList.add(ByteBuffer.wrap(input,cursor,4).getInt());
             cursor += 4;
         }
-        for (int i=0;i<intNum;i++){
+        for (int i=0;i<strNum;i++){
             int strLen = ByteBuffer.wrap(input,cursor,4).getInt();
             cursor += 4;
             strList.add(new String (input, cursor, strLen));
             cursor += strLen;
         }
+        System.out.println("Dekodeerisin sõnumi: "+intList.toString()+" , "+strList.toString());
+        System.out.println(getNthString(1));
     }
 
     public List<String> getStrList() {

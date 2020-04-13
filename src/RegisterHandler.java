@@ -14,14 +14,14 @@ public class RegisterHandler {
     }
 
     byte[] handle(byte[] input) throws IOException {
-        InputDeconstructor inputs = new InputDeconstructor(input, 1, 1);
+        InputDeconstructor inputs = new InputDeconstructor(input, 0, 2);
         String username = inputs.getNthString(0);
         File kasutajaFail = new File("kasutajad/" + username);
         if (kasutajaFail.exists()) {
             errorCode = 2;
         } else {
-            int pass = inputs.getNthInt(0);
-            Files.write(Paths.get("kasutajad", username), new ArrayList<>(List.of(Integer.toString(pass))));
+            String pass = inputs.getNthString(1);
+            Files.write(Paths.get("kasutajad", username), new ArrayList<>(List.of(pass)));
             errorCode = 0;
         }
         return null;

@@ -1,0 +1,7 @@
+# Ignored files
+/workspace.xml
+.idea/
+*.iml
+out/
+target/
+*.class

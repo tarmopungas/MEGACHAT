@@ -28,10 +28,6 @@ public class ChatClient {
 
     }
 
-    void setUserName(String userName) {
-        this.userName = userName;
-    }
-
     String getUserName() {
         return this.userName;
     }

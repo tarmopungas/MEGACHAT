@@ -31,14 +31,19 @@ public class Kuulaja implements Runnable{
                     //System.out.printf("Lugesin req sizei %d\n", requestSize);
                     byte[] request = new byte[requestSize];
                     din.readNBytes(request, 0, requestSize);
-                    Integer errorCode = 0;
+                    Integer errorCode = 0; // TODO: Miks lihtsalt int ei sobiks?
                     byte[] output = null;
                     switch (requestType) {
                         // siin kutsutakse handlereid välja caseidega
                         case 1:
+                            // TODO: Miks handlerile peab errorCode'i kaasa andma?
                             RegisterHandler registerHandler = new RegisterHandler(errorCode);
                             output = registerHandler.handle(request);
                             break;
+                        case 3:
+                            PasswordChangeHandler passwordChangeHandler = new PasswordChangeHandler(errorCode);
+                            output = passwordChangeHandler.handle(request);
+
                         default:
                             System.out.println("Midagi on valesti, lugesin request typei: " + requestType);
                             // kliendile saadetakse "mittedefineeritud request type"

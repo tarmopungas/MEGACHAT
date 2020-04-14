@@ -88,7 +88,7 @@ Kasutajaliides
 
   * Käsud:
    Alati kättesaadavad:
-    * /info		- Kuvatakse info kõigi käskude kohta
+    * /help		- Kuvatakse info kõigi käskude kohta
 
    Vestlusruumis: 
     * /addfriend ...	- Lisab antud nimega isiku sõbralisti
@@ -99,8 +99,8 @@ Kasutajaliides
    Logimine:
     * /login 		- Saadab serverile räsifunktsiooni sisse logimiseks (args[0] = username, args[1] = password)
     * /logout		- Aktiivse kasutajaga logitakse serverist välja
-    * /changepw 	- Kasutaja saab parooli vahetada (args[0] = old_pw, args[1] = new_pw)
     * /register		- Loob uue kasutaja andmebaasi (args[0] = new_username, args[1] = new_password)
+    * /changepw 	- Kasutaja saab parooli vahetada (args[0] = old_pw, args[1] = new_pw)
 
 Server
 * andmed:

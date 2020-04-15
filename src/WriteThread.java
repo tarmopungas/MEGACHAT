@@ -1,15 +1,16 @@
-import javax.swing.*;
 import java.io.*;
 import java.net.*;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
 
 /**
  * Lõim, mis loeb kasutaja sisendi ja edastab selle serverile.
  * Jookseb seni, kui kasutaja sisestab '/logout', et lahkuda.
  */
+
+// TODO: Tekitada (int) muutujad requesttype'idele, et kood oleks kergemini loetav (int requestTypeChangePassword = 3 vms)
+
 public class WriteThread extends Thread {
     private Socket socket;
     private ChatClient client;
@@ -20,6 +21,7 @@ public class WriteThread extends Thread {
     boolean loggedIn = false;
     // Authtoken saadetakse iga requestiga kaasa et tõestada, et see on volitatud kasutaja
     int authToken;
+
 
     public WriteThread(Socket socket, ChatClient client) {
         this.socket = socket;
@@ -42,6 +44,7 @@ public class WriteThread extends Thread {
     private void help() {
         console.writer().println("/help - prints this menu");
         console.writer().println("/logout - logs out and closes the program");
+        console.writer().println("/changepw – changes your password");
     }
 
     /**
@@ -119,17 +122,19 @@ public class WriteThread extends Thread {
             } catch (IOException e) {
                 throw new RuntimeException("Failed to send request");
             } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException ("Encryptor function not found");
+                throw new RuntimeException("Encryptor function not found");
             }
         } else {
             console.writer().println("Command was not understood, use syntax /register [username] [password], username and password cannot include spaces");
         }
     }
 
+    /**
+     * Kutsutakse välja /changepw käsu puhul, saadab serverisse register requesti
+     * kui sisend sisaldab tühikutega eraldatud vana salasõna ja uut salasõna
+     */
     private void changePassword(String text) {
-        // TODO (vähemoluline):
-        //      1. Tekitada (int) muutujad requesttype'idele, et kood oleks kergemini loetav (int requestTypeChangePassword = 3 vms)
-        //      2. Teha salasõnade sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil(?)
+        // TODO Teha salasõnade sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil(?)
         if (text.split(" ").length == 3) {
             try {
                 InputConstructor saadetav = new InputConstructor();
@@ -156,7 +161,7 @@ public class WriteThread extends Thread {
                 }
 
             } catch (NoSuchAlgorithmException e) {
-                throw new RuntimeException ("Encryptor function not found");
+                throw new RuntimeException("Encryptor function not found");
             } catch (IOException e) {
                 throw new RuntimeException("Failed to send request");
             }
@@ -212,6 +217,7 @@ public class WriteThread extends Thread {
                     } else {
                         console.writer().println("Log in to change your password");
                     }
+                    break;
                 default:
                     console.writer().println("The command was not understood, write /help to learn more");
             }

@@ -40,9 +40,13 @@ public class Kuulaja implements Runnable{
                             RegisterHandler registerHandler = new RegisterHandler(errorCode);
                             output = registerHandler.handle(request);
                             break;
+                        case 2:
+                            // TODO: Luua LoginHandler objekt
+                            break;
                         case 3:
                             PasswordChangeHandler passwordChangeHandler = new PasswordChangeHandler(errorCode);
                             output = passwordChangeHandler.handle(request);
+                            break;
 
                         default:
                             System.out.println("Midagi on valesti, lugesin request typei: " + requestType);

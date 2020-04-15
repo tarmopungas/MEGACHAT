@@ -127,18 +127,19 @@ public class WriteThread extends Thread {
     }
 
     private void changePassword(String text) {
-        // TODO:
-        //      1. Authtoken tuleb iga requestiga kaasa saata
-        //      2. Tekitada (int) muutujad requesttype'idele, et kood oleks kergemini loetav (int requestTypeChangePassword = 3 vms)
-        //      3. Teha salasõnade sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil(?)
+        // TODO (vähemoluline):
+        //      1. Tekitada (int) muutujad requesttype'idele, et kood oleks kergemini loetav (int requestTypeChangePassword = 3 vms)
+        //      2. Teha salasõnade sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil(?)
         if (text.split(" ").length == 3) {
             try {
                 InputConstructor saadetav = new InputConstructor();
                 // Hash old and new password
                 StringBuilder oldPassHash = createHash(text.split(" ")[1]);
                 StringBuilder newPassHash = createHash(text.split(" ")[2]);
+                saadetav.insertStr(userName);
                 saadetav.insertStr(oldPassHash.toString());
                 saadetav.insertStr(newPassHash.toString());
+                saadetav.insertInt(authToken);
                 byte[] request = saadetav.getOutput();
                 // Reqtype
                 doutput.writeInt(3);
@@ -150,16 +151,17 @@ public class WriteThread extends Thread {
                 if (errCode != 0) {
                     throw new RuntimeException("Failed to change password (probably entered wrong password)");
                 } else {
+                    dinput.readAllBytes();
                     console.writer().println("Password change successful!");
                 }
 
             } catch (NoSuchAlgorithmException e) {
-                e.printStackTrace();
+                throw new RuntimeException ("Encryptor function not found");
             } catch (IOException e) {
                 throw new RuntimeException("Failed to send request");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /changepw [old password] [new password], password cannot include spaces");
+            console.writer().println("Command was not understood, use syntax /changepw [old password] [new password], password cannot include spaces.");
         }
 
 

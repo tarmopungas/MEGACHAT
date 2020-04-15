@@ -3,6 +3,8 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Arrays;
+import java.util.Scanner;
 
 /**
  * Lõim, mis loeb kasutaja sisendi ja edastab selle serverile.
@@ -33,7 +35,7 @@ public class WriteThread extends Thread {
             InputStream input = socket.getInputStream();
             dinput = new DataInputStream(input);
         } catch (IOException ex) {
-            System.out.println("Error getting output stream: " + ex.getMessage());
+            console.writer().println("Error getting output stream: " + ex.getMessage());
             ex.printStackTrace();
         }
     }
@@ -68,7 +70,7 @@ public class WriteThread extends Thread {
                 int errCode = dinput.readInt();
                 if (errCode != 0) {
                     // TODO: Siin võiks errorcode põhjal anda erineva sõnumi olenevalt kas kasutaja puudub v vale pass v midagi muud
-                    System.out.println("Server failed to login (probably wrong username or password)");
+                    console.writer().println("Server failed to login (probably wrong username or password)");
                 } else {
                     int responseSize = dinput.readInt();
                     byte[] response = new byte[responseSize];
@@ -114,9 +116,6 @@ public class WriteThread extends Thread {
                     // TODO: Siin võiks errorcode põhjal anda erineva sõnumi olenevalt kas kasutajanimi on juba kasutusel v midagi muud
                     throw new RuntimeException("Server failed to register (probably username in use already)");
                 } else {
-                    // responseSize peaks 0 olema ja response tühi olema, nii et ma ei loe seda
-                    //int responseSize = dinput.readInt();
-                    dinput.readAllBytes();
                     console.writer().println("Successfully created account! Use /login to login");
                 }
             } catch (IOException e) {
@@ -185,14 +184,12 @@ public class WriteThread extends Thread {
     }
 
     public void run() {
-        //client.setUserName(userName);
-        //writer.println(userName);
         console.writer().println("Hello, write /register [username] [password] to register an account or /login [username] [password] to log in");
         String text;
 
         do {
             text = console.readLine("[" + userName + "]: ");
-            //console.writer().println(text);
+
             switch (text.split(" ")[0]) {
                 case ("/help"):
                     help();
@@ -206,7 +203,7 @@ public class WriteThread extends Thread {
                     break;
                 case ("/register"):
                     if (loggedIn) {
-                        console.writer().println("Already logged in");
+                        console.writer().println("Log out to register a new account");
                     } else {
                         register(text);
                     }
@@ -227,7 +224,7 @@ public class WriteThread extends Thread {
             socket.close();
         } catch (IOException ex) {
 
-            System.out.println("Error writing to server: " + ex.getMessage());
+            console.writer().println("Error writing to server: " + ex.getMessage());
         }
     }
 }

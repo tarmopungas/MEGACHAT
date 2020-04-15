@@ -31,8 +31,8 @@ public class InputDeconstructor {
             strList.add(new String (input, cursor, strLen));
             cursor += strLen;
         }
-        System.out.println("Dekodeerisin sõnumi: "+intList.toString()+" , "+strList.toString());
-        System.out.println(getNthString(1));
+        //System.out.println("Dekodeerisin sõnumi: "+intList.toString()+" , "+strList.toString());
+        //System.out.println(getNthString(1));
     }
 
     public List<String> getStrList() {

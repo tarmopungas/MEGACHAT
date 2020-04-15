@@ -31,7 +31,7 @@ public class Kuulaja implements Runnable{
                     //System.out.printf("Lugesin req sizei %d\n", requestSize);
                     byte[] request = new byte[requestSize];
                     din.readNBytes(request, 0, requestSize);
-                    Integer errorCode = 0; // TODO: Miks lihtsalt int ei sobiks?
+                    int errorCode = 0;
                     byte[] output = null;
                     switch (requestType) {
                         // siin kutsutakse handlereid välja caseidega

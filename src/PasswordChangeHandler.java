@@ -10,7 +10,7 @@ public class PasswordChangeHandler {
      * Handler kontrollib, kas vana salasõna klapib sisestatuga. Kui ei klapi, saadab error code'i. Kui klapib, asendab vana salasõna uuega.
      * */
 
-    Integer errorCode;
+    int errorCode;
 
     public PasswordChangeHandler(Integer errorCode) {
         this.errorCode = errorCode;

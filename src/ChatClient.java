@@ -17,7 +17,7 @@ public class ChatClient {
 
             System.out.println("Connected to the chat server");
 
-            new ReadThread(socket, this).start();
+            //new ReadThread(socket, this).start();
             new WriteThread(socket, this).start();
 
         } catch (UnknownHostException ex) {

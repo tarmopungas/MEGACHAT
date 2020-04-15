@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class RegisterHandler {
-    Integer errorCode;
+    int errorCode;
 
     public RegisterHandler(Integer errorCode) {
         this.errorCode = errorCode;
@@ -15,7 +15,13 @@ public class RegisterHandler {
     byte[] handle(byte[] input) throws IOException {
         InputDeconstructor inputs = new InputDeconstructor(input, 0, 2);
         String username = inputs.getNthString(0);
-        File kasutajaFail = new File("kasutajad/" + username);
+
+        // Loob uue kausta "kasutajad", kui seda enne ei eksisteerinud
+        String pathOfDirectory = "." + File.separator + "kasutajad";
+        Files.createDirectories(Paths.get(pathOfDirectory));
+
+        File kasutajaFail = new File("kasutajad" + File.separator + username);
+
         if (kasutajaFail.exists()) {
             errorCode = 2;
         } else {

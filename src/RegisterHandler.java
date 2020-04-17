@@ -25,8 +25,8 @@ public class RegisterHandler {
         if (kasutajaFail.exists()) {
             errorCode = 2;
         } else {
-            String pass = inputs.getNthString(1);
-            Files.write(Paths.get("kasutajad", userName), new ArrayList<>(List.of(pass)));
+            String enteredPass = inputs.getNthString(1);
+            Files.writeString(Paths.get("kasutajad", userName), enteredPass);
             errorCode = 0;
         }
         return null;

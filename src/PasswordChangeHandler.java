@@ -1,3 +1,4 @@
+import java.io.File;
 import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -16,17 +17,21 @@ public class PasswordChangeHandler {
     }
 
     byte[] handle(byte[] input) throws IOException {
-        // SISEND Int: authToken. Strings: userName, oldPassHash, newPassHash
-        InputDeconstructor inputs = new InputDeconstructor(input, 1, 2);
-        int authToken = inputs.getNthInt(0); // TODO: Kontrollida, et authToken klapib
+        // SISEND Int: authToken. Strings: userName, hash of enteredOldPass, hash of newPass
+        InputDeconstructor inputs = new InputDeconstructor(input, 1, 3);
+        // TODO: Implementeerida authToken
+        int authToken = inputs.getNthInt(0);
+        String userName = inputs.getNthString(0);
 
-        // Loeb sisse sisestatud passi hashi ja kontrollib, et see klapib
-        String oldPassHash = inputs.getNthString(1);
-        String pass = Arrays.toString(Files.readAllBytes(Paths.get("kasutajad", inputs.getNthString(0))));
+        // Loeb sisse sisestatud vana salasõna ja praegu kehtiva salasõna
+        String enteredOldPass = inputs.getNthString(1);
+        String pathOfDirectory = "." + File.separator + "kasutajad" + File.separator + userName;
+        String actualOldPass = Files.readString(Paths.get(pathOfDirectory)).strip();
 
         // Kui salasõnad klapivad, kirjutab uue salasõna faili
-        if (oldPassHash.equals(pass)) {
-            Files.write(Paths.get("kasutajad", inputs.getNthString(0)), new ArrayList<>(List.of(inputs.getNthString(2))));
+        if (enteredOldPass.equals(actualOldPass)) {
+            String enteredNewPass = inputs.getNthString(2);
+            Files.writeString(Paths.get("kasutajad", userName), enteredNewPass);
             errorCode = 0;
         } else {
             errorCode = 2;

@@ -12,9 +12,9 @@ public class LoginHandler {
     byte[] handle(byte[] input) throws IOException {
         // SISEND Strings: userName, passwordHash
         InputDeconstructor inputs = new InputDeconstructor(input, 0, 2);
-        String username = inputs.getNthString(0);
+        String userName = inputs.getNthString(0);
 
-        String pathOfDirectory = "." + File.separator + "kasutajad" + File.separator + username;
+        String pathOfDirectory = "." + File.separator + "kasutajad" + File.separator + userName;
         File kasutajaFail = new File(pathOfDirectory);
 
         if (!kasutajaFail.exists()) {

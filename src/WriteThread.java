@@ -149,13 +149,13 @@ public class WriteThread extends Thread {
         if (text.split(" ").length == 3) {
             try {
                 InputConstructor saadetav = new InputConstructor();
-                // Hash old and new password
+                // Vanast ja uuest salasõnast võetakse räsi
                 StringBuilder oldPassHash = createHash(text.split(" ")[1]);
                 StringBuilder newPassHash = createHash(text.split(" ")[2]);
-                saadetav.insertStr(userName);
-                saadetav.insertStr(oldPassHash.toString());
-                saadetav.insertStr(newPassHash.toString());
-                saadetav.insertInt(authToken);
+                saadetav.insertStr(userName); // Kasutajanimi lisatakse
+                saadetav.insertStr(oldPassHash.toString()); // Vana salasõna räsi lisatakse
+                saadetav.insertStr(newPassHash.toString()); // Uue salasõna räsi lisatakse
+                saadetav.insertInt(authToken); // authToken lisatakse
                 byte[] request = saadetav.getOutput();
                 // Reqtype
                 doutput.writeInt(3);
@@ -165,10 +165,8 @@ public class WriteThread extends Thread {
                 doutput.write(request, 0, request.length);
                 int errCode = dinput.readInt();
                 if (errCode != 0) {
-                    // TODO: anda täpsemalt kasutajale teada, mis valesti läks
-                    console.writer().println("Failed to change password (probably entered wrong password)");
+                    console.writer().println("Wrong password. Please try again.");
                 } else {
-                    dinput.readAllBytes();
                     console.writer().println("Password change successful!");
                 }
 

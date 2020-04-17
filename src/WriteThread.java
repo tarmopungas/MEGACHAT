@@ -14,7 +14,7 @@ import java.util.Scanner;
 // TODO: Tekitada (int) muutujad requesttype'idele, et kood oleks kergemini loetav (int requestTypeChangePassword = 3 vms)
 
 public class WriteThread extends Thread {
-    private Socket socket;
+    private final Socket socket;
     private ChatClient client;
     Console console = System.console();
     private DataOutputStream doutput;
@@ -46,19 +46,22 @@ public class WriteThread extends Thread {
     private void help() {
         console.writer().println("/help - prints this menu");
         console.writer().println("/logout - logs out and closes the program");
-        console.writer().println("/changepw – changes your password");
+        console.writer().println("/changepw [old password] [new password] – changes your password");
     }
 
     /**
      * Kutsutakse välja /login käsu puhul, saadab serverisse login requesti
-     * kui sisendteks sisaldab tühikutega eraldatud kasutajanime ja salasõna
+     * kui sisend sisaldab tühikutega eraldatud kasutajanime ja salasõna
      */
     private void login(String text) {
         if (text.split(" ").length == 3) {
             try {
                 InputConstructor saadetav = new InputConstructor();
+                // Kasutajanimi lisatakase
                 saadetav.insertStr(text.split(" ")[1]);
+                // Salasõnast võetakse räsi
                 StringBuilder hashstr = createHash(text.split(" ")[2]);
+                // Salasõna räsi lisatakse
                 saadetav.insertStr(hashstr.toString());
                 byte[] request = saadetav.getOutput();
                 // Reqtype
@@ -69,13 +72,18 @@ public class WriteThread extends Thread {
                 doutput.write(request, 0, request.length);
                 int errCode = dinput.readInt();
                 if (errCode != 0) {
-                    // TODO: Siin võiks errorcode põhjal anda erineva sõnumi olenevalt kas kasutaja puudub v vale pass v midagi muud
-                    console.writer().println("Server failed to login (probably wrong username or password)");
+                    if (errCode == 2) {
+                        console.writer().println("A user with this name does not exist. Please try again.");
+                    } else if (errCode == 1) {
+                        console.writer().println("Wrong password. Please try again.");
+                    } else {
+                        console.writer().println("Server failed to login. Please try again.");
+                    }
                 } else {
-                    int responseSize = dinput.readInt();
-                    byte[] response = new byte[responseSize];
-                    dinput.readNBytes(response, 0, responseSize);
-                    authToken = ByteBuffer.wrap(response, 0, 4).getInt();
+//                    int responseSize = dinput.readInt();
+//                    byte[] response = new byte[responseSize];
+//                    dinput.readNBytes(response, 0, responseSize);
+//                    authToken = ByteBuffer.wrap(response, 0, 4).getInt();
                     userName = text.split(" ")[1];
                     loggedIn = true;
                     console.writer().println("Successfully logged in!");
@@ -95,6 +103,7 @@ public class WriteThread extends Thread {
      * kui sisend sisaldab tühikutega eraldatud kasutajanime ja salasõna
      */
     private void register(String text) {
+        // TODO: Teha salasõna sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil
         if (text.split(" ").length == 3) {
             try {
                 InputConstructor saadetav = new InputConstructor();
@@ -113,8 +122,11 @@ public class WriteThread extends Thread {
                 doutput.write(request, 0, request.length);
                 int errCode = dinput.readInt();
                 if (errCode != 0) {
-                    // TODO: Siin võiks errorcode põhjal anda erineva sõnumi olenevalt kas kasutajanimi on juba kasutusel v midagi muud
-                    throw new RuntimeException("Server failed to register (probably username in use already)");
+                    if (errCode == 2) {
+                        console.writer().println("This username is taken. Please try again.");
+                    } else {
+                        console.writer().println("Server failed to register");
+                    }
                 } else {
                     console.writer().println("Successfully created account! Use /login to login");
                 }
@@ -133,7 +145,7 @@ public class WriteThread extends Thread {
      * kui sisend sisaldab tühikutega eraldatud vana salasõna ja uut salasõna
      */
     private void changePassword(String text) {
-        // TODO Teha salasõnade sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil(?)
+        // TODO: Teha salasõnade sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil
         if (text.split(" ").length == 3) {
             try {
                 InputConstructor saadetav = new InputConstructor();
@@ -153,7 +165,8 @@ public class WriteThread extends Thread {
                 doutput.write(request, 0, request.length);
                 int errCode = dinput.readInt();
                 if (errCode != 0) {
-                    throw new RuntimeException("Failed to change password (probably entered wrong password)");
+                    // TODO: anda täpsemalt kasutajale teada, mis valesti läks
+                    console.writer().println("Failed to change password (probably entered wrong password)");
                 } else {
                     dinput.readAllBytes();
                     console.writer().println("Password change successful!");
@@ -213,6 +226,13 @@ public class WriteThread extends Thread {
                         changePassword(text);
                     } else {
                         console.writer().println("Log in to change your password");
+                    }
+                    break;
+                case ("/logout"):
+                    if (loggedIn) {
+                        console.writer().println("You have successfully logged out. See you next time!");
+                    } else {
+                        console.writer().println("Bye-bye!");
                     }
                     break;
                 default:

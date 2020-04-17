@@ -12,15 +12,13 @@ public class PasswordChangeHandler {
 
     int errorCode;
 
-    public PasswordChangeHandler(Integer errorCode) {
-        this.errorCode = errorCode;
+    public PasswordChangeHandler() {
     }
 
     byte[] handle(byte[] input) throws IOException {
         // SISEND Int: authToken. Strings: userName, oldPassHash, newPassHash
         InputDeconstructor inputs = new InputDeconstructor(input, 1, 2);
-        int authToken = inputs.getNthInt(0);
-        // TODO: Kuidas kontrollida, et authToken klapib?
+        int authToken = inputs.getNthInt(0); // TODO: Kontrollida, et authToken klapib
 
         // Loeb sisse sisestatud passi hashi ja kontrollib, et see klapib
         String oldPassHash = inputs.getNthString(1);

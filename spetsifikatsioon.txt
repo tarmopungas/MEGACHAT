@@ -92,7 +92,7 @@ Kasutajaliides
 
    Vestlusruumis: 
     * /addfriend ...	- Lisab antud nimega isiku sõbralisti
-    * /rmfriend ...	- Eemaldab antud nimega isiku sõbralisti
+    * /rmfriend ...	- Eemaldab antud nimega isiku sõbralistist
     * /join ...		- Liitub antud ruumiga
     * /leave		- Lahkub ruumist, kus kasutaja on
 
@@ -109,7 +109,7 @@ Server
     protokolliga kõik sõnumid koos kasutajanimedega ajalises järjestuses
   * samas kaustas on ka manused kõigi vestluste seest koos vestluse id ja
     sõnumi numbriga, kust manus pärit on
- * kasutajate andmed andmebaasisi/tekstifailina
+ * kasutajate andmed andmebaasi/tekstifailina
   * list kasutaja sõpradest
   * list kasutaja vestluste id-dest
   * kasutaja salasõna räsi

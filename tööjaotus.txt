@@ -13,5 +13,6 @@ Server:
 * võtmete kustutamisskript - ?, pole alustatud
 * kuulaja - Joosep, valmis
 * login handler - Tarmo, valmis
+* password change handler – Tarmo, valmis
 * register handler - Joosep, Tarmo, valmis
 * kodulehe handler - ?, pole alustatud

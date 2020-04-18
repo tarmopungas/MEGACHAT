@@ -91,12 +91,13 @@ Kasutajaliides
     * /help		- Kuvatakse info kõigi käskude kohta
 
    Vestlusruumis: 
-    * /addfriend ...	- Lisab antud nimega isiku sõbralisti
-    * /rmfriend ...	- Eemaldab antud nimega isiku sõbralisti
-    * /join ...		- Liitub antud ruumiga
-    * /leave		- Lahkub ruumist, kus kasutaja on
+    * /addfriend  - Lisab antud nimega isiku sõbralisti (args[0] = friend_username)
+    * /rmfriend   - Eemaldab antud nimega isiku sõbralistist (args[0] = friend_username)
+    * /join       - Liitub antud ruumiga
+    * /leave		  - Lahkub ruumist, kus kasutaja on
 
    Logimine:
+<<<<<<< HEAD
     * /login 		- Saadab serverile räsifunktsiooni sisse logimiseks (args[0] = username, args[1] = password)
     * /logout		- Aktiivse kasutajaga logitakse serverist välja
     * /register		- Võtab "args[1] = new_username". Kui sellise tunnusega nime pole avatakse registreerimisaken.
@@ -105,6 +106,12 @@ Kasutajaliides
     * /changepw 	- Kasutaja saab parooli vahetada
         - Paroolimuutmisaknas:  1) küsitakse vana parooli
                                 2) kui parool on õige tuleb sisestada kahel erineval korral uus parool.
+=======
+    * /login    - Saadab serverile räsifunktsiooni sisse logimiseks (args[0] = username, args[1] = password)
+    * /logout   - Aktiivse kasutajaga logitakse serverist välja
+    * /register	- Loob uue kasutaja andmebaasi (args[0] = new_username, args[1] = new_password)
+    * /changepw - Kasutaja saab parooli vahetada (args[0] = old_pw, args[1] = new_pw)
+>>>>>>> d4bc6815a699e94de9a12222cc761455974f766a
 
 Server
 * andmed:
@@ -113,7 +120,7 @@ Server
     protokolliga kõik sõnumid koos kasutajanimedega ajalises järjestuses
   * samas kaustas on ka manused kõigi vestluste seest koos vestluse id ja
     sõnumi numbriga, kust manus pärit on
- * kasutajate andmed andmebaasisi/tekstifailina
+ * kasutajate andmed andmebaasi/tekstifailina
   * list kasutaja sõpradest
   * list kasutaja vestluste id-dest
   * kasutaja salasõna räsi
@@ -153,6 +160,12 @@ Server
   * kui ei, siis salvestab kasutajanime ja räsi ning saadab tagasi et on
     korras
 
+* password change handler
+ * võtab sisse kasutajanime, uue ja vana salasõna räsi
+ * kontrollib, kas kasutaja on olemas ja kas sisestati õige salasõna
+  * kui jah, siis siis salvestab uue salasõna räsi ning saadab tagasi et on korras
+  * kui ei, siis saadab vea tagasi
+
 * kodulehe handler
  * võtab sisse võtme
  * kontrollib võtmete failist, kas võti kehtib
@@ -173,9 +186,4 @@ Server
  * võtab sisse vestluse id ja võtme
  * kontrollib võtme kehtivust ja kasutaja vestluses olekut
  * saadab tagasi 20 viimast sõnumit vestlusest
-
-* uute sõnumite handler
- * võtab sisse vestluse id ja võtme ja esimese sõnumi numbri
- * kontrollib võtme kehtivust ja kasutaja vestluses olekut
- * saadab tagasti 20 sõnumit alustades sisse saadud sõnumi numbrist
 

@@ -8,25 +8,25 @@ import java.util.List;
 public class RegisterHandler {
     int errorCode;
 
-    public RegisterHandler(Integer errorCode) {
-        this.errorCode = errorCode;
+    public RegisterHandler() {
     }
 
     byte[] handle(byte[] input) throws IOException {
+        // SISEND Strings: userName, passwordHash
         InputDeconstructor inputs = new InputDeconstructor(input, 0, 2);
-        String username = inputs.getNthString(0);
+        String userName = inputs.getNthString(0);
 
         // Loob uue kausta "kasutajad", kui seda enne ei eksisteerinud
         String pathOfDirectory = "." + File.separator + "kasutajad";
         Files.createDirectories(Paths.get(pathOfDirectory));
 
-        File kasutajaFail = new File("kasutajad" + File.separator + username);
+        File kasutajaFail = new File("kasutajad" + File.separator + userName);
 
         if (kasutajaFail.exists()) {
             errorCode = 2;
         } else {
-            String pass = inputs.getNthString(1);
-            Files.write(Paths.get("kasutajad", username), new ArrayList<>(List.of(pass)));
+            String enteredPass = inputs.getNthString(1);
+            Files.writeString(Paths.get("kasutajad", userName), enteredPass);
             errorCode = 0;
         }
         return null;

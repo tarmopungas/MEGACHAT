@@ -3,6 +3,7 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/MEGACHAT.iml" filepath="$PROJECT_DIR$/MEGACHAT.iml" />
+      <module fileurl="file://$PROJECT_DIR$/MEGACHAT1.iml" filepath="$PROJECT_DIR$/MEGACHAT1.iml" />
     </modules>
   </component>
 </project>

@@ -2,8 +2,8 @@ import java.net.*;
 import java.io.*;
 
 public class ChatClient {
-    private String hostname;
-    private int port;
+    private final String hostname;
+    private final int port;
     private String userName;
 
     public ChatClient(String hostname, int port) {

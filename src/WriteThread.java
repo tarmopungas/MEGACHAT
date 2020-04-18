@@ -53,13 +53,13 @@ public class WriteThread extends Thread {
      * kui sisend sisaldab tühikutega eraldatud kasutajanime ja salasõna
      */
     private void login(String text) {
-        if (text.split(" ").length == 3) {
+        if (text.split(" ").length == 2) {
             try {
                 InputConstructor saadetav = new InputConstructor();
                 // Kasutajanimi lisatakase
                 saadetav.insertStr(text.split(" ")[1]);
                 // Salasõnast võetakse räsi
-                StringBuilder hashstr = createHash(text.split(" ")[2]);
+                StringBuilder hashstr = createHash(PasswordField.getPassword("Enter password: "));
                 // Salasõna räsi lisatakse
                 saadetav.insertStr(hashstr.toString());
                 byte[] request = saadetav.getOutput();
@@ -105,14 +105,19 @@ public class WriteThread extends Thread {
      * kui sisend sisaldab tühikutega eraldatud kasutajanime ja salasõna
      */
     private void register(String text) {
-        // TODO: Teha salasõna sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil
-        if (text.split(" ").length == 3) {
+        //if (text.split(" ").length == 3) {
+        if (text.split(" ").length == 2) {
             try {
                 InputConstructor saadetav = new InputConstructor();
                 // Kasutajanimi lisatakse
                 saadetav.insertStr(text.split(" ")[1]);
                 // Salasõnast võetakse räsi
-                StringBuilder hashstr = createHash(text.split(" ")[2]);
+                StringBuilder hashstr = createHash(PasswordField.getPassword("Enter new password: "));
+                StringBuilder hashstr2 = createHash(PasswordField.getPassword("Enter new password again: "));
+                if (!(hashstr.compareTo(hashstr2) == 0)) {
+                    console.writer().println("Passwords didn't match. Try again please!");
+                    return;
+                }
                 // Salasõna räsi lisatakse
                 saadetav.insertStr(hashstr.toString());
                 byte[] request = saadetav.getOutput();
@@ -147,13 +152,17 @@ public class WriteThread extends Thread {
      * kui sisend sisaldab tühikutega eraldatud vana salasõna ja uut salasõna
      */
     private void changePassword(String text) {
-        // TODO: Teha salasõnade sisestamine peidetuks: st, et salasõna sisse trükkides ei kuvata seda ekraanil
-        if (text.split(" ").length == 3) {
+        if (text.split(" ").length == 1) {
             try {
                 InputConstructor saadetav = new InputConstructor();
                 // Vanast ja uuest salasõnast võetakse räsi
-                StringBuilder oldPassHash = createHash(text.split(" ")[1]);
-                StringBuilder newPassHash = createHash(text.split(" ")[2]);
+                StringBuilder oldPassHash = createHash(PasswordField.getPassword("Enter old password: "));
+                StringBuilder newPassHash = createHash(PasswordField.getPassword("Enter new password: "));
+                StringBuilder newPassHash2 = createHash(PasswordField.getPassword("Enter new password again: "));
+                if (!(newPassHash.compareTo(newPassHash2) == 0)) {
+                    console.writer().println("New passwords didn't match. Try again please.");
+                    return;
+                }
                 saadetav.insertStr(userName); // Kasutajanimi lisatakse
                 saadetav.insertStr(oldPassHash.toString()); // Vana salasõna räsi lisatakse
                 saadetav.insertStr(newPassHash.toString()); // Uue salasõna räsi lisatakse
@@ -197,7 +206,8 @@ public class WriteThread extends Thread {
     }
 
     public void run() {
-        console.writer().println("Hello, write /register [username] [password] to register an account or /login [username] [password] to log in");
+        console.writer().println("Hello, write /register [username] to register an account or /login [username] to log in");
+        //console.writer().println("Hello, write /register [username] [password] to register an account or /login [username] [password] to log in");
         String text;
 
         do {

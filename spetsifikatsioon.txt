@@ -92,13 +92,21 @@ Kasutajaliides
     * /addfriend  - Lisab antud nimega isiku sõbralisti (args[0] = friend_username)
     * /rmfriend   - Eemaldab antud nimega isiku sõbralistist (args[0] = friend_username)
     * /join       - Liitub antud ruumiga
-    * /leave		  - Lahkub ruumist, kus kasutaja on
+    * /leave	  - Lahkub ruumist, kus kasutaja on
 
    Logimine:
-    * /login    - Saadab serverile räsifunktsiooni sisse logimiseks (args[0] = username, args[1] = password)
+    * /register	- Avab kasutajale parooliakna uue kasutaja registreerimiseks (args[0] = new_username)
+                 \- Küsitakse parooli esimest korda
+                  \- Küsitakse parooli teist korda
+                   \- Kui paroolid klapivad, saadetakse andmed räsifunktsioonina serverile ja kasutaja registreeritakse
+    * /login    - Avab kasutajale parooliakna sisse logimiseks ; (args[0] = username)
+                 \- Kasutaja sisestab parooli, ning mõlemad sisendid lähevad serverile räsifunktsioonina
     * /logout   - Aktiivse kasutajaga logitakse serverist välja
-    * /register	- Loob uue kasutaja andmebaasi (args[0] = new_username, args[1] = new_password)
-    * /changepw - Kasutaja saab parooli vahetada (args[0] = old_pw, args[1] = new_pw)
+    * /changepw - Kasutaja saab parooli vahetada
+                 \- Küsitakse vana parooli
+                  \- Küsitakse uut parooli
+                   \- Küsitakse uut parooli teist korda
+                    \- Kui paroolid klapivad, saadetakse serverile päring vana parool üle kirjutada
 
 Server
 * andmed:

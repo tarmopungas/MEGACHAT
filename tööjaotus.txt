@@ -6,9 +6,9 @@ Kasutajaliides:
 * WriteThread – Tarmo, valmis
 * põhimõtte välja mõtlemine - ?, pole alustatud
 * avaaken - ?, pole alustatud
-* login aken - ?, pole alustatud
-* registreerumisaken - Marten, alustatud
-* passwordField - Marten, alustatud
+* login aken - Marten, valmis
+* registreerumisaken - Marten, valmis
+* passwordField - Marten, valmis
 * koduleht - ?, pole alustatud
 Server:
 * võtmete kustutamisskript - ?, pole alustatud

@@ -1,7 +1,4 @@
-import java.io.File;
-import java.io.IOException;
-import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.io.*;
 
 public class LoginHandler {
     int errorCode;
@@ -11,24 +8,26 @@ public class LoginHandler {
 
     byte[] handle(byte[] input) throws IOException {
         // SISEND Strings: userName, passwordHash
+        // TODO: implementeerida authToken
         InputDeconstructor inputs = new InputDeconstructor(input, 0, 2);
         String userName = inputs.getNthString(0);
 
-        String pathOfDirectory = "." + File.separator + "kasutajad" + File.separator + userName;
-        File kasutajaFail = new File(pathOfDirectory);
+        File kasutajaFail = new File("." + File.separator + "kasutajad" + File.separator + userName + ".txt");
 
         if (!kasutajaFail.exists()) {
             errorCode = 2;
+            return null;
         } else {
             String enteredPass = inputs.getNthString(1);
-            String actualPass = Files.readString(Paths.get(pathOfDirectory)).strip();
-
-            if (enteredPass.equals(actualPass)) {
-                errorCode = 0;
-            } else {
-                errorCode = 1;
+                Kasutaja kasutaja = ObjectConversion.loeKasutaja(kasutajaFail);
+                String actualPass = kasutaja.getPassword();
+                if (enteredPass.equals(actualPass)) {
+                    errorCode = 0;
+                    return ObjectConversion.convertToBytes(kasutaja);
+                } else {
+                    errorCode = 1;
+                    return null;
             }
         }
-        return null;
     }
 }

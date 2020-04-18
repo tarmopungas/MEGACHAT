@@ -109,13 +109,16 @@ Server
     protokolliga kõik sõnumid koos kasutajanimedega ajalises järjestuses
   * samas kaustas on ka manused kõigi vestluste seest koos vestluse id ja
     sõnumi numbriga, kust manus pärit on
- * kasutajate andmed andmebaasi/tekstifailina
+ * kasutajate andmed andmebaasi/tekstifailina (hetkel igas tekstifailis Kasutaja isend)
   * list kasutaja sõpradest
   * list kasutaja vestluste id-dest
   * kasutaja salasõna räsi
   * list vestlustest, kus on uusi sõnumeid tulnud peale välja logimist
  * list kehtivatest võtmetest, siia jäätakse meelde ka kliendi asukoht,
    kuhu sõnumeid saata kuni klient on sisse logitud
+
+* Kasutaja, et luua uusi kasutajaid ja hoida nende andmeid
+ * ObjectConversion, et hõlbustada Kasutaja isendite liigutamist ja failist lugemist/kirjutamist
 
 * mingi skript mis iga mingi aja tagant vaatab võtmeid ja kustutab aegunud
   võtmed ära

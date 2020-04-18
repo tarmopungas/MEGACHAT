@@ -26,9 +26,7 @@ public class Kuulaja implements Runnable {
                     if (requestType == -1) {
                         break;
                     }
-                    //System.out.printf("Lugesin req typei %d\n", requestType);
                     int requestSize = din.readInt();
-                    //System.out.printf("Lugesin req sizei %d\n", requestSize);
                     byte[] request = new byte[requestSize];
                     din.readNBytes(request, 0, requestSize);
                     int errorCode = 0;
@@ -37,7 +35,7 @@ public class Kuulaja implements Runnable {
                         // siin kutsutakse handlereid välja caseidega
                         case 1:
                             RegisterHandler registerHandler = new RegisterHandler();
-                            output = registerHandler.handle(request);
+                            registerHandler.handle(request);
                             errorCode = registerHandler.errorCode;
                             break;
                         case 2:
@@ -47,7 +45,7 @@ public class Kuulaja implements Runnable {
                             break;
                         case 3:
                             PasswordChangeHandler passwordChangeHandler = new PasswordChangeHandler();
-                            output = passwordChangeHandler.handle(request);
+                            passwordChangeHandler.handle(request);
                             errorCode = passwordChangeHandler.errorCode;
                             break;
                         default:
@@ -56,15 +54,13 @@ public class Kuulaja implements Runnable {
                             errorCode = 1;
                     }
                     dout.writeInt(errorCode);
-//                    if (errorCode == 0 && output != null) {
-//                        dout.writeInt(output.length);
-//                        dout.write(output);
-//                    } else {
-//                        dout.writeInt(0);
-//                    }
+                    if (errorCode == 0 && output != null) {
+                        dout.writeInt(output.length);
+                        dout.write(output);
+                    }
                 }
             } catch (IOException e) {
-                // Klient sulges ühenduse
+                e.printStackTrace();
             }
         }
     }

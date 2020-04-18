@@ -11,14 +11,13 @@ import java.util.Scanner;
  * Jookseb seni, kui kasutaja sisestab '/logout', et lahkuda.
  */
 
-// TODO: Tekitada (int) muutujad requesttype'idele, et kood oleks kergemini loetav (int requestTypeChangePassword = 3 vms)
-
 public class WriteThread extends Thread {
     private final Socket socket;
     private ChatClient client;
     Console console = System.console();
     private DataOutputStream doutput;
     private DataInputStream dinput;
+    private Kasutaja kasutaja;
     String userName = "not logged in";
     boolean loggedIn = false;
     // Authtoken saadetakse iga requestiga kaasa et tõestada, et see on volitatud kasutaja
@@ -80,11 +79,12 @@ public class WriteThread extends Thread {
                         console.writer().println("Server failed to login. Please try again.");
                     }
                 } else {
-//                    int responseSize = dinput.readInt();
-//                    byte[] response = new byte[responseSize];
-//                    dinput.readNBytes(response, 0, responseSize);
-//                    authToken = ByteBuffer.wrap(response, 0, 4).getInt();
-                    userName = text.split(" ")[1];
+                    int responseSize = dinput.readInt();
+                    byte[] response = new byte[responseSize];
+                    dinput.readNBytes(response, 0, responseSize);
+                    kasutaja = (Kasutaja) ObjectConversion.convertFromBytes(response);
+                    //authToken = ByteBuffer.wrap(response, 0, 4).getInt();
+                    userName = kasutaja.getUserName();
                     loggedIn = true;
                     console.writer().println("Successfully logged in!");
                 }
@@ -92,6 +92,8 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Failed to send request");
             } catch (NoSuchAlgorithmException e) {
                 throw new RuntimeException("Encryptor function not found");
+            } catch (ClassNotFoundException e) {
+                throw new RuntimeException("Class not found");
             }
         } else {
             console.writer().println("Command was not understood, use syntax /login [username] [password], username and password cannot include spaces");

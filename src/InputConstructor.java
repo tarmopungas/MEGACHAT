@@ -22,15 +22,20 @@ public class InputConstructor {
             }
             dstream.close();
             return stream.toByteArray();
-        } catch (IOException e){
-            throw new RuntimeException ("Failed to form request");
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to form request");
         }
     }
-    public void insertStr(String str){
+
+    public void insertStr(String str) {
         strList.add(str);
         strListSize += str.length();
     }
-    public void insertInt(int num){
+
+    public void insertInt(int num) {
         intList.add(num);
     }
 }
+
+
+

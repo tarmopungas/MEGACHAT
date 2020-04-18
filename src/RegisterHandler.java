@@ -1,9 +1,6 @@
-import java.io.File;
-import java.io.IOException;
+import java.io.*;
 import java.nio.file.Files;
 import java.nio.file.Paths;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RegisterHandler {
     int errorCode;
@@ -11,7 +8,7 @@ public class RegisterHandler {
     public RegisterHandler() {
     }
 
-    byte[] handle(byte[] input) throws IOException {
+    void handle(byte[] input) throws IOException {
         // SISEND Strings: userName, passwordHash
         InputDeconstructor inputs = new InputDeconstructor(input, 0, 2);
         String userName = inputs.getNthString(0);
@@ -20,15 +17,18 @@ public class RegisterHandler {
         String pathOfDirectory = "." + File.separator + "kasutajad";
         Files.createDirectories(Paths.get(pathOfDirectory));
 
-        File kasutajaFail = new File("kasutajad" + File.separator + userName);
+        // Loob kasutajale temanimelise faili
+        File kasutajaFail = new File("kasutajad" + File.separator + userName + ".txt");
 
         if (kasutajaFail.exists()) {
             errorCode = 2;
         } else {
             String enteredPass = inputs.getNthString(1);
-            Files.writeString(Paths.get("kasutajad", userName), enteredPass);
+            Kasutaja kasutaja = new Kasutaja(userName, enteredPass);
+
+            // Kirjutab faili Kasutaja isendi
+            ObjectConversion.kirjutaKasutaja(kasutajaFail, kasutaja);
             errorCode = 0;
         }
-        return null;
     }
 }

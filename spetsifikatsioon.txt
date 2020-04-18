@@ -7,11 +7,9 @@ Kasutajaliides
  * avab ReadThreadi ja WriteThreadi
  * maini vahendusel käib erinevate akende vahel navigeerimine
 
-* ReadThread
- * loeb serverist sisendi ja väljastab selle konsooli
-
 * WriteThread
- * loeb kasutaja sisendi ja edastab selle serverile
+ * loeb kasutaja sisendi ja edastab requesti serverile
+ * võtab serverilt response vastu
 
 * avaaken
  * login nupp

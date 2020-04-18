@@ -12,6 +12,6 @@ Kasutajaliides:
 Server:
 * võtmete kustutamisskript - ?, pole alustatud
 * kuulaja - Joosep, valmis
-* login handler - Joosep, pooleli
-* register handler - ?, pole alustatud
+* login handler - Tarmo, valmis
+* register handler - Joosep, Tarmo, valmis
 * kodulehe handler - ?, pole alustatud

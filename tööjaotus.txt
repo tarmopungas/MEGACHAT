@@ -7,7 +7,8 @@ Kasutajaliides:
 * põhimõtte välja mõtlemine - ?, pole alustatud
 * avaaken - ?, pole alustatud
 * login aken - ?, pole alustatud
-* registreerumisaken - ?, pole alustatud
+* registreerumisaken - Marten, alustatud
+* passwordField - Marten, alustatud
 * koduleht - ?, pole alustatud
 Server:
 * võtmete kustutamisskript - ?, pole alustatud

@@ -99,8 +99,12 @@ Kasutajaliides
    Logimine:
     * /login 		- Saadab serverile räsifunktsiooni sisse logimiseks (args[0] = username, args[1] = password)
     * /logout		- Aktiivse kasutajaga logitakse serverist välja
-    * /register		- Loob uue kasutaja andmebaasi (args[0] = new_username, args[1] = new_password)
-    * /changepw 	- Kasutaja saab parooli vahetada (args[0] = old_pw, args[1] = new_pw)
+    * /register		- Võtab "args[1] = new_username". Kui sellise tunnusega nime pole avatakse registreerimisaken.
+        - registreerimisaknas küsitakse uut parooli kaks korda. Kui paroolid ühtivad ja sobivad, siis salvestatakse.
+
+    * /changepw 	- Kasutaja saab parooli vahetada
+        - Paroolimuutmisaknas:  1) küsitakse vana parooli
+                                2) kui parool on õige tuleb sisestada kahel erineval korral uus parool.
 
 Server
 * andmed:

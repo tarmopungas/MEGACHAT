@@ -45,7 +45,7 @@ public class WriteThread extends Thread {
     private void help() {
         console.writer().println("/help - prints this menu");
         console.writer().println("/logout - logs out and closes the program");
-        console.writer().println("/changepw [old password] [new password] – changes your password");
+        console.writer().println("/changepw - change your password");
     }
 
     /**
@@ -96,7 +96,7 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Class not found");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /login [username] [password], username and password cannot include spaces");
+            console.writer().println("Command was not understood, use syntax /login [username], username and password cannot include spaces");
         }
     }
 
@@ -143,7 +143,7 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Encryptor function not found");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /register [username] [password], username and password cannot include spaces");
+            console.writer().println("Command was not understood, use syntax /register [username], username and password cannot include spaces.");
         }
     }
 
@@ -187,7 +187,7 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Failed to send request");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /changepw [old password] [new password], password cannot include spaces.");
+            console.writer().println("Command was not understood, use syntax /changepw. New password cannot include spaces.");
         }
 
 

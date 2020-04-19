@@ -19,18 +19,17 @@ Kasutajaliides
  * unustasin salasõna(?)
 
 * login aken
- * lahtrid kasutajanime ja salasõna jaoks, nupp "logi sisse"
+ * eraldi lahtrid kasutajanime ja parooli jaoks. Sisestamisel saadetakse serverile räsi.
  * nupu vajutamisel:
   * kontrollitakse et lahtrid on täidetud, kui ei siis tuleb kasutajale
     teade et täida lahtrid
   * saadetakse salasõna räsifunktsiooni (saab räsi tagasi)
   * saadetakse kasutajanimi ja räsi serverile login requestina, vastu tuleb:
-   * kasutajanime ei leidu v salasõna on vale, siis peab kasutaja andmeid
-     muutma
-   * kõik on korras, serverilt sadud võti salvestatakse, kasutaja suunatakse oma kodulehele
+   * kasutajanime ei leidu v salasõna on vale.
+   * kõik on korras, serverilt saadud võti salvestatakse, kasutaja suunatakse oma kodulehele
 
 * registreerimisaken
- * lahtrid kasutajanime ja salasõna jaoks, nupp "registreeri"
+ * lahtrid kasutajanime ja salasõna jaoks
  * nupu vajutamisel:
   * kontrollitakse et lahtrid on täidetud, vajadusel ka lisapiirangud
     salasõnale vms, kui ei siis tuleb kasutajale teade et täida lahtrid

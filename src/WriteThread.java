@@ -106,8 +106,8 @@ public class WriteThread extends Thread {
      * kui sisend sisaldab tühikutega eraldatud kasutajanime ja salasõna
      */
     private void register(String text) {
-        //if (text.split(" ").length == 3) {
-        if (text.split(" ").length == 2) {
+        String[] tykid = text.split(" ");
+        if (tykid.length == 2 && !tykid[1].contains("/") && !tykid[1].contains("\\")) {
             try {
                 InputConstructor saadetav = new InputConstructor();
                 // Kasutajanimi lisatakse
@@ -146,7 +146,7 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Encryptor function not found");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /register [username], username and password cannot include spaces");
+            console.writer().println("Command was not understood, use syntax /register [username], username and password cannot include spaces or slashes");
         }
     }
 

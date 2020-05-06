@@ -59,7 +59,8 @@ public class WriteThread extends Thread {
                 // Kasutajanimi lisatakase
                 saadetav.insertStr(text.split(" ")[1]);
                 // Salasõnast võetakse räsi
-                StringBuilder hashstr = createHash(PasswordField.getPassword("Enter password: "));
+                console.writer().println("Enter password: ");
+                StringBuilder hashstr = createHash(String.valueOf(console.readPassword()));
                 // Salasõna räsi lisatakse
                 saadetav.insertStr(hashstr.toString());
                 byte[] request = saadetav.getOutput();
@@ -96,7 +97,7 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Class not found");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /login [username] [password], username and password cannot include spaces");
+            console.writer().println("Command was not understood, use syntax /login [username], username and password cannot include spaces");
         }
     }
 
@@ -112,8 +113,10 @@ public class WriteThread extends Thread {
                 // Kasutajanimi lisatakse
                 saadetav.insertStr(text.split(" ")[1]);
                 // Salasõnast võetakse räsi
-                StringBuilder hashstr = createHash(PasswordField.getPassword("Enter new password: "));
-                StringBuilder hashstr2 = createHash(PasswordField.getPassword("Enter new password again: "));
+                console.writer().println("Enter new password: ");
+                StringBuilder hashstr = createHash(String.valueOf(console.readPassword()));
+                console.writer().println("Confirm new password: ");
+                StringBuilder hashstr2 = createHash(String.valueOf(console.readPassword()));
                 if (!(hashstr.compareTo(hashstr2) == 0)) {
                     console.writer().println("Passwords didn't match. Try again please!");
                     return;
@@ -143,7 +146,7 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Encryptor function not found");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /register [username] [password], username and password cannot include spaces");
+            console.writer().println("Command was not understood, use syntax /register [username], username and password cannot include spaces");
         }
     }
 
@@ -156,9 +159,12 @@ public class WriteThread extends Thread {
             try {
                 InputConstructor saadetav = new InputConstructor();
                 // Vanast ja uuest salasõnast võetakse räsi
-                StringBuilder oldPassHash = createHash(PasswordField.getPassword("Enter old password: "));
-                StringBuilder newPassHash = createHash(PasswordField.getPassword("Enter new password: "));
-                StringBuilder newPassHash2 = createHash(PasswordField.getPassword("Enter new password again: "));
+                console.writer().println("Enter old password: ");
+                StringBuilder oldPassHash = createHash(String.valueOf(console.readPassword()));
+                console.writer().println("Enter new password: ");
+                StringBuilder newPassHash = createHash(String.valueOf(console.readPassword()));
+                console.writer().println("Confirm new password: ");
+                StringBuilder newPassHash2 = createHash(String.valueOf(console.readPassword()));
                 if (!(newPassHash.compareTo(newPassHash2) == 0)) {
                     console.writer().println("New passwords didn't match. Try again please.");
                     return;
@@ -187,7 +193,7 @@ public class WriteThread extends Thread {
                 throw new RuntimeException("Failed to send request");
             }
         } else {
-            console.writer().println("Command was not understood, use syntax /changepw [old password] [new password], password cannot include spaces.");
+            console.writer().println("Command was not understood, use syntax /changepw, password cannot include spaces.");
         }
 
 

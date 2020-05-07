@@ -15,5 +15,6 @@ Ehitus:
 * Kasutaja arvutis olev klient hoiab puhvris sisselogitud kasutaja kõigist vestlustest mõistliku koguse kõige uuemaid sõnumeid (~100 sõnumit)
 
 Praegune käivitamisõpetus käsurealt:
-* Ühes käsurea aknas: navigeeri peakausta ja sisesta käsk "java -jar MEGACHAT-0-SNAPSHOT-jar-with-dependencies.jar" (see käivitab ServerMaini pordil 1337)
-* Teises käsurea aknas: käivita ChatClient argumentidega ip aadress ja port (ehk default serveri settingutega java ChatClient 127.0.0.1 1337)
+* Navigeeri peakausta ja sisesta käsk "mvn install"
+* Navigeeri kausta /target ja sisesta käsk "java -jar MEGACHAT-0-SNAPSHOT-jar-with-dependencies.jar" (see käivitab ServerMaini pordil 1337)
+* Teises käsurea aknas: navigeeri kausta /target/classes ja käivita ChatClient argumentidega ip aadress ja port (ehk default serveri settingutega "java ChatClient 127.0.0.1 1337")

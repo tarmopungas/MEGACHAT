@@ -1,6 +1,6 @@
 # MEGACHAT
 Terminalipõhine vestlusrakendus vestlusruumide ja privaatvestlustega
-
+ 
 Kasutajapoolne funktsionaalsus:
 * Saab teisi inimesi sõpradeks lisada
 * Saab luua vestlusruume ning sinna sõpru kutsuda

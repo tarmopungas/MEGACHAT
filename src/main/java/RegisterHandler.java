@@ -1,6 +1,8 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 import java.nio.file.Files;
-import java.nio.file.Paths;
+import java.nio.file.Path;
 
 public class RegisterHandler {
     int errorCode;
@@ -14,8 +16,8 @@ public class RegisterHandler {
         String userName = inputs.getNthString(0);
 
         // Loob uue kausta "kasutajad", kui seda enne ei eksisteerinud
-        String pathOfDirectory = "." + File.separator + "kasutajad";
-        Files.createDirectories(Paths.get(pathOfDirectory));
+        Path path = Path.of(".", "kasutajad");
+        Files.createDirectories(path);
 
         // Loob kasutajale temanimelise faili
         File kasutajaFail = new File("kasutajad" + File.separator + userName + ".txt");
@@ -24,6 +26,7 @@ public class RegisterHandler {
             errorCode = 2;
         } else {
             String enteredPass = inputs.getNthString(1);
+
             Kasutaja kasutaja = new Kasutaja(userName, enteredPass);
 
             // Kirjutab faili Kasutaja isendi

@@ -1,3 +1,5 @@
+import com.fasterxml.jackson.databind.ObjectMapper;
+
 import java.io.*;
 
 // Kasutaja objektide liigutamise hõlbustamiseks mõeldud meetodid
@@ -20,12 +22,10 @@ public class ObjectConversion {
     }
     public static Kasutaja loeKasutaja(File file) {
         // Loeb antud failist Kasutaja isendi
-        try (FileInputStream fi = new FileInputStream(file);
-             ObjectInputStream oi = new ObjectInputStream(fi))
-        {
-            return (Kasutaja) oi.readObject();
-        } catch (ClassNotFoundException e) {
-            throw new RuntimeException("Class not found");
+        try (FileInputStream f = new FileInputStream(file);
+             DataInputStream in = new DataInputStream(new BufferedInputStream(f))) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(in.readUTF(), Kasutaja.class);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found");
         } catch (IOException e) {
@@ -34,9 +34,13 @@ public class ObjectConversion {
     }
     public static void kirjutaKasutaja(File file, Kasutaja kasutaja) {
         // Kirjutab antud faili antud Kasutaja isendi
+        ObjectMapper objectMapper = new ObjectMapper();
+
         try (FileOutputStream f = new FileOutputStream(file);
-             ObjectOutputStream o = new ObjectOutputStream(f)) {
-            o.writeObject(kasutaja);
+             DataOutputStream out = new DataOutputStream(new BufferedOutputStream(f))) {
+            String kasutajaAsJson = objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(kasutaja);
+            out.writeUTF(kasutajaAsJson);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found");
         } catch (IOException e) {

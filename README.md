@@ -14,6 +14,6 @@ Ehitus:
 * Vestluseid ja kasutajate andmeid hoitakse keskserveris
 * Kasutaja arvutis olev klient hoiab puhvris sisselogitud kasutaja kõigist vestlustest mõistliku koguse kõige uuemaid sõnumeid (~100 sõnumit)
 
-Praegune käivitamisõpetus:
-* Käivita ServerMain (see jookseb pordil 1337)
-* Käivita ChatClient argumentidega ip aadress ja pord (ehk default serveri settingutega java ChatClient 127.0.0.1 1337)
+Praegune käivitamisõpetus käsurealt:
+* Ühes käsurea aknas: navigeeri kausta /target ja sisesta käsk "java -jar MEGACHAT-0-SNAPSHOT-jar-with-dependencies.jar" (see käivitab ServerMaini pordil 1337)
+* Teises käsurea aknas: navigeeri kausta /target/classes ja käivita ChatClient argumentidega ip aadress ja pord (ehk default serveri settingutega java ChatClient 127.0.0.1 1337)

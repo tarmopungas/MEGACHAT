@@ -8,6 +8,9 @@ public class Kasutaja implements Serializable {
     private List<String> incomingFriendRequests;
     private List<String> friends;
 
+    public Kasutaja() {
+    }
+
     public Kasutaja(String userName, String password) {
         this.userName = userName;
         this.password = password;

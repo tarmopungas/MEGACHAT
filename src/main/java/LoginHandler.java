@@ -19,14 +19,16 @@ public class LoginHandler {
             return null;
         } else {
             String enteredPass = inputs.getNthString(1);
-                Kasutaja kasutaja = ObjectConversion.loeKasutaja(kasutajaFail);
-                String actualPass = kasutaja.getPassword();
-                if (enteredPass.equals(actualPass)) {
-                    errorCode = 0;
-                    return ObjectConversion.convertToBytes(kasutaja);
-                } else {
-                    errorCode = 1;
-                    return null;
+
+            Kasutaja kasutaja = ObjectConversion.loeKasutaja(kasutajaFail);
+
+            String actualPass = kasutaja.getPassword();
+            if (enteredPass.equals(actualPass)) {
+                errorCode = 0;
+                return ObjectConversion.convertToBytes(kasutaja);
+            } else {
+                errorCode = 1;
+                return null;
             }
         }
     }

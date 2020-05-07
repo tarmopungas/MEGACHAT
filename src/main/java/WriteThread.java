@@ -3,8 +3,6 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Arrays;
-import java.util.Scanner;
 
 /**
  * Lõim, mis loeb kasutaja sisendi ja edastab selle serverile.

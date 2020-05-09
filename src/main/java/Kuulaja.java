@@ -1,4 +1,5 @@
 import java.io.*;
+import java.net.CacheRequest;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -21,6 +22,7 @@ public class Kuulaja implements Runnable {
                  DataInputStream din = new DataInputStream(in);
                  DataOutputStream dout = new DataOutputStream(out)) {
                 // ootab uusi requeste
+                String userName = null;
                 while (true) {
                     int requestType = din.readInt();
                     if (requestType == -1) {
@@ -42,11 +44,24 @@ public class Kuulaja implements Runnable {
                             LoginHandler loginHandler = new LoginHandler();
                             output = loginHandler.handle(request);
                             errorCode = loginHandler.errorCode;
+                            if (errorCode == 0){
+                                userName = loginHandler.userName;
+                            }
                             break;
                         case 3:
                             PasswordChangeHandler passwordChangeHandler = new PasswordChangeHandler();
                             passwordChangeHandler.handle(request);
                             errorCode = passwordChangeHandler.errorCode;
+                            break;
+                        case 4:
+                            CreateChatroomHandler createChatroomHandler = new CreateChatroomHandler();
+                            if (userName == null){
+                                errorCode = 3;
+                            } else {
+                                createChatroomHandler.userName = userName;
+                                createChatroomHandler.handle(request);
+                                errorCode = createChatroomHandler.errorCode;
+                            }
                             break;
                         default:
                             System.out.println("Midagi on valesti, lugesin request typei: " + requestType);

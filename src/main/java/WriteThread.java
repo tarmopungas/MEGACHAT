@@ -44,6 +44,7 @@ public class WriteThread extends Thread {
         console.writer().println("/help - prints this menu");
         console.writer().println("/logout - logs out and closes the program");
         console.writer().println("/changepw [old password] [new password] – changes your password");
+        console.writer().println("/create [name of chat room] – creates a new chat room");
     }
 
     /**
@@ -193,8 +194,44 @@ public class WriteThread extends Thread {
         } else {
             console.writer().println("Command was not understood, use syntax /changepw, password cannot include spaces.");
         }
+    }
 
-
+    /**
+     * Kutsutakse välja /create käsu puhul, saadab serverisse requesti luua uus vestlusruum
+     */
+    private void createChat(String text){
+        String[] tykid = text.split(" ");
+        if (tykid.length == 2 && !tykid[1].contains("/") && !tykid[1].contains("\\")) {
+            try {
+                InputConstructor saadetav = new InputConstructor();
+                // Nimi lisatakse
+                saadetav.insertStr(text.split(" ")[1]);
+                byte[] request = saadetav.getOutput();
+                // Reqtype
+                doutput.writeInt(4);
+                // Reqsize
+                doutput.writeInt(request.length);
+                // Request
+                doutput.write(request, 0, request.length);
+                int errCode = dinput.readInt();
+                if (errCode != 0) {
+                    if (errCode == 2) {
+                        console.writer().println("This chat room name is taken. Please try again.");
+                    } else if (errCode == 3) {
+                        // server arvab et sa ei ole sisse logitud, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
+                        console.writer().println("Server failure (error 3)");
+                    } else {
+                        console.writer().println("Server failure");
+                    }
+                } else {
+                    console.writer().println("Successfully created a chat room! Use /join [name] to enter");
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to send request");
+            }
+        } else {
+            console.writer().println("Command was not understood, use syntax /create [name of chatroom], name cannot include spaces or slashes");
+        }
     }
 
     private StringBuilder createHash(String password) throws NoSuchAlgorithmException {
@@ -208,6 +245,7 @@ public class WriteThread extends Thread {
         }
         return hashstr;
     }
+
 
     public void run() {
         console.writer().println("Hello, write /register [username] to register an account or /login [username] to log in");
@@ -247,6 +285,13 @@ public class WriteThread extends Thread {
                         console.writer().println("You have successfully logged out. See you next time!");
                     } else {
                         console.writer().println("Bye-bye!");
+                    }
+                    break;
+                case ("/create"):
+                    if (loggedIn) {
+                        createChat(text);
+                    } else {
+                        console.writer().println("Log in to create a chatroom");
                     }
                     break;
                 default:

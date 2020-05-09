@@ -2,6 +2,7 @@ import java.io.*;
 
 public class LoginHandler {
     int errorCode;
+    String userName;
 
     public LoginHandler() {
     }
@@ -10,7 +11,7 @@ public class LoginHandler {
         // SISEND Strings: userName, passwordHash
         // TODO: implementeerida authToken
         InputDeconstructor inputs = new InputDeconstructor(input, 0, 2);
-        String userName = inputs.getNthString(0);
+        userName = inputs.getNthString(0);
 
         File kasutajaFail = new File("." + File.separator + "kasutajad" + File.separator + userName + ".txt");
 

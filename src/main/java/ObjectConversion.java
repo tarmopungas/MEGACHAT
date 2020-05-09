@@ -47,4 +47,31 @@ public class ObjectConversion {
             throw new RuntimeException("IOException");
         }
     }
+    public static Vestlusruum loeVestlusruum(File file) {
+        // Loeb antud failist Vestlusruumi isendi
+        try (FileInputStream f = new FileInputStream(file);
+             DataInputStream in = new DataInputStream(new BufferedInputStream(f))) {
+            ObjectMapper objectMapper = new ObjectMapper();
+            return objectMapper.readValue(in.readUTF(), Vestlusruum.class);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found");
+        } catch (IOException e) {
+            throw new RuntimeException("IOException");
+        }
+    }
+    public static void kirjutaVestlusruum(File file, Vestlusruum vestlusruum) {
+        // Kirjutab antud faili antud Vestlusruumi isendi
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        try (FileOutputStream f = new FileOutputStream(file);
+             DataOutputStream out = new DataOutputStream(new BufferedOutputStream(f))) {
+            String kasutajaAsJson = objectMapper.writerWithDefaultPrettyPrinter()
+                    .writeValueAsString(vestlusruum);
+            out.writeUTF(kasutajaAsJson);
+        } catch (FileNotFoundException e) {
+            throw new RuntimeException("File not found");
+        } catch (IOException e) {
+            throw new RuntimeException("IOException");
+        }
+    }
 }

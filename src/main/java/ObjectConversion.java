@@ -47,16 +47,18 @@ public class ObjectConversion {
             throw new RuntimeException("IOException");
         }
     }
-    public static Vestlusruum loeVestlusruum(File file) {
+    public static Vestlusruum loeVestlusruum(File file) { // IOException igal lugemisel
         // Loeb antud failist Vestlusruumi isendi
-        try (FileInputStream f = new FileInputStream(file);
-             DataInputStream in = new DataInputStream(new BufferedInputStream(f))) {
+        try (DataInputStream in = new DataInputStream(new BufferedInputStream(
+                     new FileInputStream(file)))) {
             ObjectMapper objectMapper = new ObjectMapper();
-            return objectMapper.readValue(in.readUTF(), Vestlusruum.class);
+            String input = in.readUTF();
+            System.out.println(input);
+            return objectMapper.readValue(input, Vestlusruum.class);
         } catch (FileNotFoundException e) {
             throw new RuntimeException("File not found");
         } catch (IOException e) {
-            throw new RuntimeException("IOException");
+            throw new RuntimeException("IOException. (CaseSensitivity @ request)");
         }
     }
     public static void kirjutaVestlusruum(File file, Vestlusruum vestlusruum) {

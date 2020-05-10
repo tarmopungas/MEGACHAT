@@ -16,6 +16,7 @@ public class WriteThread extends Thread {
     private DataOutputStream doutput;
     private DataInputStream dinput;
     private Kasutaja kasutaja;
+    private Vestlusruum vestlusruum;
     String userName = "not logged in";
     boolean loggedIn = false;
     // Authtoken saadetakse iga requestiga kaasa et tõestada, et see on volitatud kasutaja
@@ -45,6 +46,7 @@ public class WriteThread extends Thread {
         console.writer().println("/logout - logs out and closes the program");
         console.writer().println("/changepw [old password] [new password] – changes your password");
         console.writer().println("/create [name of chat room] – creates a new chat room");
+        console.writer().println("/join [name of chat room] – connects to given chat room");
     }
 
     /**
@@ -234,6 +236,51 @@ public class WriteThread extends Thread {
         }
     }
 
+    /**
+     * Kutsutakse /join käsu vastu võtmisel.
+     */
+
+    private void joinChat(String text) {
+        String[] tykid = text.split(" ");
+        if (tykid.length == 2 && !tykid[1].contains("/") && !tykid[1].contains("\\")) {
+            try {
+                InputConstructor saadetav = new InputConstructor();
+                // lisame ruumi nime
+                saadetav.insertStr(text.split(" ")[1]);
+                byte[] request = saadetav.getOutput();
+                // Reqtype - join
+                doutput.writeInt(5);
+                // Reqsize
+                doutput.writeInt(request.length);
+                // Request
+                doutput.write(request, 0, request.length);
+                int errCode = dinput.readInt();
+                if (errCode != 0 | vestlusruum == null) {
+                    if (errCode == 2) {
+                        console.writer().println("This chat room doesn't exist. Please try again.");
+                    } else if (errCode == 3) {
+                        // server arvab et sa ei ole sisse logitud, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
+                        console.writer().println("Server failure (error 3)");
+                    } else {
+                        console.writer().println("Server failure");
+                    }
+
+                } else { // Pääseme vestlusruumi
+                    //Vestlusruum vestlusruum;
+                    console.writer().println("Hello, welcome to ");
+                    while (true) { // Hakakb sõnumite saatmine ja vastuvõtmine
+
+
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to send request. Try again please.");
+            }
+        } else {
+            console.writer().println("Command was not understood, use syntax /join [name of chatroom], name doesn't include spaces or slashes");
+        }
+    }
+
     private StringBuilder createHash(String password) throws NoSuchAlgorithmException {
         MessageDigest encryptor = MessageDigest.getInstance("SHA-256");
         byte[] hash = encryptor.digest(password.getBytes());
@@ -249,7 +296,6 @@ public class WriteThread extends Thread {
 
     public void run() {
         console.writer().println("Hello, write /register [username] to register an account or /login [username] to log in");
-        //console.writer().println("Hello, write /register [username] [password] to register an account or /login [username] [password] to log in");
         String text;
 
         do {
@@ -294,6 +340,11 @@ public class WriteThread extends Thread {
                         console.writer().println("Log in to create a chatroom");
                     }
                     break;
+                case ("/join"):
+                    if (loggedIn) {
+                        joinChat(text);
+                    }
+
                 default:
                     console.writer().println("The command was not understood, write /help to learn more");
             }

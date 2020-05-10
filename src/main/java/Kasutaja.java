@@ -6,7 +6,6 @@ import java.util.Set;
 public class Kasutaja implements Serializable {
     private String userName;
     private String password;
-    private int authToken;
     private List<String> incomingFriendRequests;
     private List<String> friends;
     private Set<String> chatrooms = new HashSet<>();
@@ -39,5 +38,9 @@ public class Kasutaja implements Serializable {
 
     public void setPassword(String password) {
         this.password = password;
+    }
+
+    public void update(Vestlusruum vestlusruum) {
+        vestlusruum.getMessages();
     }
 }

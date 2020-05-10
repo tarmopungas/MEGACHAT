@@ -1,5 +1,4 @@
 import java.io.*;
-import java.net.CacheRequest;
 import java.net.ServerSocket;
 import java.net.Socket;
 
@@ -53,14 +52,24 @@ public class Kuulaja implements Runnable {
                             passwordChangeHandler.handle(request);
                             errorCode = passwordChangeHandler.errorCode;
                             break;
-                        case 4:
-                            CreateChatroomHandler createChatroomHandler = new CreateChatroomHandler();
-                            if (userName == null){
+                        case 4: // create chatroom
+                            ChatroomHandler createChatroomHandler = new ChatroomHandler();
+                            if (userName == null) {
                                 errorCode = 3;
                             } else {
                                 createChatroomHandler.userName = userName;
                                 createChatroomHandler.handle(request);
                                 errorCode = createChatroomHandler.errorCode;
+                            }
+                            break;
+                        case 5: // join chatroom
+                            ChatroomHandler joinChatroomHandler = new ChatroomHandler();
+                            if (userName == null) {
+                                errorCode = 3;
+                            } else {
+                                joinChatroomHandler.userName = userName;
+                                joinChatroomHandler.connect(request);
+                                errorCode = joinChatroomHandler.errorCode;
                             }
                             break;
                         default:

@@ -72,6 +72,17 @@ public class Kuulaja implements Runnable {
                                 errorCode = joinChatroomHandler.errorCode;
                             }
                             break;
+                        case 6:
+                            ListroomsHandler listroomsHandler = new ListroomsHandler();
+                            if (userName == null) {
+                                errorCode = 3;
+                            } else {
+                                listroomsHandler.userName = userName;
+                                listroomsHandler.handle(request);
+                                errorCode = listroomsHandler.errorCode;
+                                output = listroomsHandler.output;
+                            }
+                            break;
                         default:
                             System.out.println("Midagi on valesti, lugesin request typei: " + requestType);
                             // kliendile saadetakse "mittedefineeritud request type"

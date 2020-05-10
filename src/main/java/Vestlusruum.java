@@ -24,9 +24,7 @@ public class Vestlusruum implements Serializable, Subject {
         return name;
     }
 
-    public CircularFifoQueue<Message> getMessages() {
-        return messages;
-    }
+    public CircularFifoQueue<Message> getMessages() { return messages; }
 
     public Set<String> getMembers() {
         return members;

@@ -3,6 +3,7 @@ import java.net.*;
 import java.nio.ByteBuffer;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
+import java.util.Set;
 
 /**
  * Lõim, mis loeb kasutaja sisendi ja edastab selle serverile.
@@ -47,6 +48,7 @@ public class WriteThread extends Thread {
         console.writer().println("/changepw [old password] [new password] – changes your password");
         console.writer().println("/create [name of chat room] – creates a new chat room");
         console.writer().println("/join [name of chat room] – connects to given chat room");
+        console.writer().println("/listrooms – prints out the list of chat rooms you are a member of");
     }
 
     /**
@@ -281,6 +283,43 @@ public class WriteThread extends Thread {
         }
     }
 
+    /**
+     * Kutsutakse välja /listrooms käsu puhul, küsib serverilt vestlusruumide listi, kus kasutaja sees on ning prindib selle
+     */
+    private void listrooms(String text) {
+        if (text.split(" ").length == 1) {
+            try {
+                // Reqtype
+                doutput.writeInt(6);
+                // Reqsize
+                doutput.writeInt(0);
+                int errCode = dinput.readInt();
+                if (errCode != 0) {
+                    if (errCode == 3){
+                        // server arvab et sa ei ole sisse logitud, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
+                        console.writer().println("Server failure (error 3)");
+                    } else {
+                        console.writer().println("Server failure");
+                    }
+                } else {
+                    console.writer().println("You are a member of the following chatrooms:");
+                    int responseSize = dinput.readInt();
+                    byte[] response = new byte[responseSize];
+                    dinput.readNBytes(response, 0, responseSize);
+                    int num = ByteBuffer.wrap(response,0,4).getInt();
+                    InputDeconstructor inputDeconstructor = new InputDeconstructor(response, 1, num);
+                    for (int i = 0; i < num; i++){
+                        console.writer().println(inputDeconstructor.getNthString(i));
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to send request");
+            }
+        } else {
+            console.writer().println("Command was not understood, use syntax /listrooms.");
+        }
+    }
+
     private StringBuilder createHash(String password) throws NoSuchAlgorithmException {
         MessageDigest encryptor = MessageDigest.getInstance("SHA-256");
         byte[] hash = encryptor.digest(password.getBytes());
@@ -344,7 +383,13 @@ public class WriteThread extends Thread {
                     if (loggedIn) {
                         joinChat(text);
                     }
-
+                case ("/listrooms"):
+                    if (loggedIn) {
+                        listrooms(text);
+                    } else {
+                        console.writer().println("Log in to create a chatroom");
+                    }
+                    break;
                 default:
                     console.writer().println("The command was not understood, write /help to learn more");
             }

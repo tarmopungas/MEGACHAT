@@ -17,5 +17,5 @@ Ehitus:
 Praegune käivitamisõpetus käsurealt:
 * Navigeeri peakausta ja sisesta käsk "mvn install"
 * Sisesta käsk "keytool -genkeypair -keyalg RSA -dname "cn=MEGACHAT server" -keystore top-secret -storepass 123abc -validity 20000"
-* Navigeeri kausta /target ja sisesta käsk "java -jar MEGACHAT-0-SNAPSHOT-jar-with-dependencies.jar" (see käivitab ServerMaini pordil 1337)
+* Navigeeri kausta /target ja sisesta käsk "java -jar MEGACHAT-1.0-SNAPSHOT-server.jar" (see käivitab ServerMaini pordil 1337)
 * Teises käsurea aknas: navigeeri kausta /target/classes ja käivita ChatClient argumentidega ip aadress ja port (ehk default serveri settingutega "java ChatClient 127.0.0.1 1337")

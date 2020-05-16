@@ -3,20 +3,24 @@ import org.apache.commons.collections4.queue.CircularFifoQueue;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.List;
 import java.util.Set;
 
-public class Vestlusruum implements Serializable, Subject {
+public class Vestlusruum implements Serializable/*, Subject*/ {
     private String name;
-    private String owner; // Omaniku ID
-    private CircularFifoQueue<Message> messages;
-    private ArrayList<Kasutaja> aktiivsedKasutajad;
+    //private String owner; // Omaniku ID
+    private List<Message> messages;
+    //private ArrayList<Kasutaja> aktiivsedKasutajad;
     private Set<String> members = new HashSet<String>();
 
+    public Vestlusruum(){
+
+    }
 
     public Vestlusruum(String name, String firstMember) {
         this.name = name;
-        this.owner = firstMember;
-        this.messages = new CircularFifoQueue<>(20);
+    //    this.owner = firstMember;
+        this.messages = new ArrayList<>();
         this.members.add(firstMember);
     }
 
@@ -24,7 +28,7 @@ public class Vestlusruum implements Serializable, Subject {
         return name;
     }
 
-    public CircularFifoQueue<Message> getMessages() { return messages; }
+    public List<Message> getMessages() { return messages; }
 
     public Set<String> getMembers() {
         return members;
@@ -38,6 +42,8 @@ public class Vestlusruum implements Serializable, Subject {
         this.members.remove(userName);
     }
 
+    public void addMessage(Message message){messages.add(message);}
+/*
     @Override
     public void attach(Kasutaja user) {
         aktiivsedKasutajad.add(user);
@@ -53,5 +59,5 @@ public class Vestlusruum implements Serializable, Subject {
         for (int i = 0; i < aktiivsedKasutajad.size(); i++) {
             aktiivsedKasutajad.get(i).update(this);
         }
-    }
+    }*/
 }

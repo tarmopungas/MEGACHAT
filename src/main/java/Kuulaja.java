@@ -83,6 +83,11 @@ public class Kuulaja implements Runnable {
                                 output = listroomsHandler.output;
                             }
                             break;
+                        case 7:
+                            MessageHandler messageHandler = new MessageHandler();
+                            messageHandler.handle(request);
+                            errorCode = messageHandler.errorCode;
+                            break;
                         default:
                             System.out.println("Midagi on valesti, lugesin request typei: " + requestType);
                             // kliendile saadetakse "mittedefineeritud request type"

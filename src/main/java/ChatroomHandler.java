@@ -19,11 +19,10 @@ public class ChatroomHandler {
         Files.createDirectories(path);
 
         File vestlusFail = new File("vestlusruumid" + File.separator + name + ".txt");
-
         if (!vestlusFail.exists()) {
             errorCode = 2;
         } else {
-            this.vestlusruum = ObjectConversion.loeVestlusruum(vestlusFail);
+/*            this.vestlusruum = ObjectConversion.loeVestlusruum(vestlusFail);
             System.out.println(vestlusruum);
 
             // Lisab kasutaja faili märkme, et ta asub selles vestlusruumis
@@ -33,7 +32,7 @@ public class ChatroomHandler {
             kasutaja.addChatroom(name);
 
             this.vestlusruum.attach(kasutaja); // Kasutaja märgitakse aktiivseks kuulajaks
-
+*/
             errorCode = 0;
         }
     }

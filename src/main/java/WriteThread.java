@@ -22,7 +22,7 @@ public class WriteThread extends Thread {
     boolean loggedIn = false;
     // Authtoken saadetakse iga requestiga kaasa et tõestada, et see on volitatud kasutaja
     int authToken;
-
+    String currentChat = null;
 
     public WriteThread(Socket socket, ChatClient client) {
         this.socket = socket;
@@ -247,8 +247,9 @@ public class WriteThread extends Thread {
         if (tykid.length == 2 && !tykid[1].contains("/") && !tykid[1].contains("\\")) {
             try {
                 InputConstructor saadetav = new InputConstructor();
+                String name = text.split(" ")[1];
                 // lisame ruumi nime
-                saadetav.insertStr(text.split(" ")[1]);
+                saadetav.insertStr(name);
                 byte[] request = saadetav.getOutput();
                 // Reqtype - join
                 doutput.writeInt(5);
@@ -257,23 +258,20 @@ public class WriteThread extends Thread {
                 // Request
                 doutput.write(request, 0, request.length);
                 int errCode = dinput.readInt();
-                if (errCode != 0 | vestlusruum == null) {
+                if (errCode != 0) {
                     if (errCode == 2) {
                         console.writer().println("This chat room doesn't exist. Please try again.");
                     } else if (errCode == 3) {
                         // server arvab et sa ei ole sisse logitud, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
                         console.writer().println("Server failure (error 3)");
                     } else {
-                        console.writer().println("Server failure");
+                        console.writer().printf("Server failure (error %d)\n",errCode);
                     }
 
                 } else { // Pääseme vestlusruumi
                     //Vestlusruum vestlusruum;
-                    console.writer().println("Hello, welcome to ");
-                    while (true) { // Hakakb sõnumite saatmine ja vastuvõtmine
-
-
-                    }
+                    console.writer().printf("Hello, welcome to %s\n", name);
+                    currentChat = name;
                 }
             } catch (IOException e) {
                 throw new RuntimeException("Failed to send request. Try again please.");
@@ -283,6 +281,35 @@ public class WriteThread extends Thread {
         }
     }
 
+    /**
+     * Kutsutakse välja sõnumi saatmise puhul, saadab sõnumi serverisse
+     */
+    private void sendMsg(String text) {
+        try {
+            // Reqtype
+            doutput.writeInt(7);
+            InputConstructor saadetav = new InputConstructor();
+            saadetav.insertStr(currentChat);
+            saadetav.insertStr(text);
+            byte[] request = saadetav.getOutput();
+            // Reqsize
+            doutput.writeInt(request.length);
+            doutput.write(request, 0, request.length);
+            int errCode = dinput.readInt();
+            if (errCode != 0) {
+                if (errCode == 4){
+                    // server arvab et sinu vestlusruumi ei eksisteeri, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
+                    console.writer().println("Server failure (error 4)");
+                } else {
+                    console.writer().println("Server failure");
+                }
+            } else {
+                console.writer().println("Message sent!");
+            }
+        } catch (IOException e) {
+            throw new RuntimeException("Failed to send request");
+        }
+    }
     /**
      * Kutsutakse välja /listrooms käsu puhul, küsib serverilt vestlusruumide listi, kus kasutaja sees on ning prindib selle
      */
@@ -383,6 +410,7 @@ public class WriteThread extends Thread {
                     if (loggedIn) {
                         joinChat(text);
                     }
+                    break;
                 case ("/listrooms"):
                     if (loggedIn) {
                         listrooms(text);
@@ -391,7 +419,13 @@ public class WriteThread extends Thread {
                     }
                     break;
                 default:
-                    console.writer().println("The command was not understood, write /help to learn more");
+                    if (text.charAt(0) == '/') {
+                        console.writer().println("The command was not understood, write /help to learn more");
+                    } else if (currentChat == null){
+                        console.writer().println("Use /join [chatroom] to enter a chatroom first");
+                    } else {
+                        sendMsg(text);
+                    }
             }
         } while (!text.equals("/logout"));
 

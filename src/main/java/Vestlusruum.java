@@ -1,16 +1,17 @@
 import org.apache.commons.collections4.queue.CircularFifoQueue;
 
+import java.io.File;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Vestlusruum implements Serializable/*, Subject*/ {
+public class Vestlusruum implements Serializable, Subject {
     private String name;
     //private String owner; // Omaniku ID
     private List<Message> messages;
-    //private ArrayList<Kasutaja> aktiivsedKasutajad;
+    private ArrayList<Kasutaja> aktiivsedKasutajad;
     private Set<String> members = new HashSet<String>();
 
     public Vestlusruum(){
@@ -42,8 +43,18 @@ public class Vestlusruum implements Serializable/*, Subject*/ {
         this.members.remove(userName);
     }
 
-    public void addMessage(Message message){messages.add(message);}
-/*
+    public void addMessage(Message message){
+        messages.add(message);
+        for (String member : members){
+            if (!member.equals(message.getSender())) {
+                File kasutajaFail = new File("kasutajad" + File.separator + member + ".txt");
+                Kasutaja kasutaja = ObjectConversion.loeKasutaja(kasutajaFail);
+                kasutaja.addUnreadMessage(name, message);
+                ObjectConversion.kirjutaKasutaja(kasutajaFail, kasutaja);
+            }
+        }
+    }
+
     @Override
     public void attach(Kasutaja user) {
         aktiivsedKasutajad.add(user);
@@ -59,5 +70,5 @@ public class Vestlusruum implements Serializable/*, Subject*/ {
         for (int i = 0; i < aktiivsedKasutajad.size(); i++) {
             aktiivsedKasutajad.get(i).update(this);
         }
-    }*/
+    }
 }

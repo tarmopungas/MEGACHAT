@@ -7,6 +7,7 @@ import java.util.Set;
 public class MessageHandler {
     byte[] output;
     int errorCode;
+    String userName;
 
     public MessageHandler() {
     }
@@ -14,7 +15,7 @@ public class MessageHandler {
     void handle(byte[] input) throws IOException {
         InputDeconstructor inputDeconstructor = new InputDeconstructor(input,0,2);
         String room = inputDeconstructor.getNthString(0);
-        Message message = new Message(inputDeconstructor.getNthString(1));
+        Message message = new Message(inputDeconstructor.getNthString(1), userName);
 
         File vestlusFail = new File("vestlusruumid" + File.separator + room + ".txt");
         if (vestlusFail.exists()){

@@ -85,8 +85,20 @@ public class Kuulaja implements Runnable {
                             break;
                         case 7:
                             MessageHandler messageHandler = new MessageHandler();
+                            messageHandler.userName = userName;
                             messageHandler.handle(request);
                             errorCode = messageHandler.errorCode;
+                            break;
+                        case 8:
+                            SenderHandler senderHandler = new SenderHandler();
+                            if (userName == null) {
+                                errorCode = 3;
+                            } else {
+                                senderHandler.userName = userName;
+                                senderHandler.handle(request);
+                                errorCode = senderHandler.errorCode;
+                                output = senderHandler.output;
+                            }
                             break;
                         default:
                             System.out.println("Midagi on valesti, lugesin request typei: " + requestType);

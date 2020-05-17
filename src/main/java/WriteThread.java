@@ -347,6 +347,53 @@ public class WriteThread extends Thread {
         }
     }
 
+    /**
+     * Kutsutakse välja /refresh käsu puhul, küsib serverilt lugemata sõnumeid
+     */
+    private void receiveMsg(String text) {
+        if (text.split(" ").length == 1) {
+            try {
+                // Reqtype
+                doutput.writeInt(8);
+                // Reqsize
+                doutput.writeInt(0);
+                int errCode = dinput.readInt();
+                if (errCode != 0) {
+                    if (errCode == 3){
+                        // server arvab et sa ei ole sisse logitud, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
+                        console.writer().println("Server failure (error 3)");
+                    } else {
+                        console.writer().printf("Server failure (error %d)\n", errCode);
+                    }
+                } else {
+                    int responseSize = dinput.readInt();
+                    byte[] response = new byte[responseSize];
+                    dinput.readNBytes(response, 0, responseSize);
+                    // vestluste kogus
+                    int num = ByteBuffer.wrap(response,0,4).getInt();
+                    // sonede kogus
+                    int strNum = ByteBuffer.wrap(response, 4, 4).getInt();
+                    InputDeconstructor inputDeconstructor = new InputDeconstructor(response, 2+num, strNum);
+                    console.writer().printf("You have messages from %d chats:\n", num);
+                    int cur = 0;
+                    for (int i = 0; i < num; i++){
+                        console.writer().printf("Messages from %s:\n",inputDeconstructor.getNthString(cur++));
+                        int numInChat = inputDeconstructor.getNthInt(i+2);
+                        for (int j=0;j<numInChat;j++){
+                            console.writer().println(inputDeconstructor.getNthString(cur++));
+                        }
+                    }
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to send request");
+            }
+        } else {
+            console.writer().println("Command was not understood, use syntax /refresh.");
+        }
+    }
+
+
+
     private StringBuilder createHash(String password) throws NoSuchAlgorithmException {
         MessageDigest encryptor = MessageDigest.getInstance("SHA-256");
         byte[] hash = encryptor.digest(password.getBytes());
@@ -416,6 +463,13 @@ public class WriteThread extends Thread {
                         listrooms(text);
                     } else {
                         console.writer().println("Log in to create a chatroom");
+                    }
+                    break;
+                case ("/refresh"):
+                    if (loggedIn){
+                        receiveMsg(text);
+                    } else{
+                        console.writer().println("Log in to receive messages");
                     }
                     break;
                 default:

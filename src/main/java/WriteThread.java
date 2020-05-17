@@ -49,6 +49,8 @@ public class WriteThread extends Thread {
         console.writer().println("/create [name of chat room] – creates a new chat room");
         console.writer().println("/join [name of chat room] – connects to given chat room");
         console.writer().println("/listrooms – prints out the list of chat rooms you are a member of");
+        console.writer().println("/add [username] – adds that user to the chatroom you are currently in");
+        console.writer().println("/refresh – fetch new messages from the server");
     }
 
     /**
@@ -264,6 +266,8 @@ public class WriteThread extends Thread {
                     } else if (errCode == 3) {
                         // server arvab et sa ei ole sisse logitud, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
                         console.writer().println("Server failure (error 3)");
+                    } else if (errCode == 5) {
+                        console.writer().println("You are not a member of that chatroom");
                     } else {
                         console.writer().printf("Server failure (error %d)\n",errCode);
                     }
@@ -380,7 +384,7 @@ public class WriteThread extends Thread {
                         console.writer().printf("Messages from %s:\n",inputDeconstructor.getNthString(cur++));
                         int numInChat = inputDeconstructor.getNthInt(i+2);
                         for (int j=0;j<numInChat;j++){
-                            console.writer().println(inputDeconstructor.getNthString(cur++));
+                            console.writer().printf("%s: %s\n",inputDeconstructor.getNthString(cur++),inputDeconstructor.getNthString(cur++));
                         }
                     }
                 }
@@ -392,7 +396,44 @@ public class WriteThread extends Thread {
         }
     }
 
-
+    /**
+     * Kutsutakse välja /add käsu puhul, lisab currentChati antud kasutaja
+     */
+    private void addMember(String text) {
+        if (text.split(" ").length == 2) {
+            try {
+                // Reqtype
+                doutput.writeInt(9);
+                InputConstructor inputConstructor = new InputConstructor();
+                inputConstructor.insertStr(currentChat);
+                inputConstructor.insertStr(text.split(" ")[1]);
+                byte[] request = inputConstructor.getOutput();
+                // Reqsize
+                doutput.writeInt(request.length);
+                doutput.write(request,0,request.length);
+                int errCode = dinput.readInt();
+                if (errCode != 0) {
+                    if (errCode == 2){
+                        console.writer().println("Sellist kasutajat ei leidu");
+                    } else if (errCode == 3){
+                        // server arvab et sa ei ole sisse logitud, seda ei tohiks juhtuda kui klient nõuab enne selle käsu käivitamist sisselogimist
+                        console.writer().println("Server failure (error 3)");
+                    } else if(errCode == 4){
+                        // server arvab et seda vestlusruumi ei leidu, seda ei tohiks juhtuda
+                        console.writer().println("Server failure (error 4)");
+                    } else {
+                        console.writer().printf("Server failure (error %d)\n", errCode);
+                    }
+                } else {
+                    console.writer().printf("%s lisatud vestlusesse\n", text.split(" ")[1]);
+                }
+            } catch (IOException e) {
+                throw new RuntimeException("Failed to send request");
+            }
+        } else {
+            console.writer().println("Command was not understood, use syntax /add [member].");
+        }
+    }
 
     private StringBuilder createHash(String password) throws NoSuchAlgorithmException {
         MessageDigest encryptor = MessageDigest.getInstance("SHA-256");
@@ -470,6 +511,13 @@ public class WriteThread extends Thread {
                         receiveMsg(text);
                     } else{
                         console.writer().println("Log in to receive messages");
+                    }
+                    break;
+                case ("/add"):
+                    if (currentChat==null){
+                        console.writer().println("Use /join [chatroom] to enter a chat to add a member");
+                    } else {
+                        addMember(text);
                     }
                     break;
                 default:

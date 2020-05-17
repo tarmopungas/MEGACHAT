@@ -27,13 +27,14 @@ public class SenderHandler {
             inputConstructor.insertInt(messages.size());
             int sumAll = 0;
             for (Map.Entry<String, List<Message> > pair : messages.entrySet()){
-                sumAll += pair.getValue().size()+1;
+                sumAll += pair.getValue().size()*2+1;
             }
             inputConstructor.insertInt(sumAll);
             for (Map.Entry<String, List<Message> > pair : messages.entrySet()){
                 inputConstructor.insertStr(pair.getKey());
                 inputConstructor.insertInt(pair.getValue().size());
                 for (Message message : pair.getValue()){
+                    inputConstructor.insertStr(message.getSender());
                     inputConstructor.insertStr(message.getSonum());
                 }
             }

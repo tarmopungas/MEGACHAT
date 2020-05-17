@@ -100,6 +100,11 @@ public class Kuulaja implements Runnable {
                                 output = senderHandler.output;
                             }
                             break;
+                        case 9:
+                            AddHandler addHAndler = new AddHandler();
+                            addHAndler.handle(request);
+                            errorCode = addHAndler.errorCode;
+                            break;
                         default:
                             System.out.println("Midagi on valesti, lugesin request typei: " + requestType);
                             // kliendile saadetakse "mittedefineeritud request type"

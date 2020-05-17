@@ -22,18 +22,12 @@ public class ChatroomHandler {
         if (!vestlusFail.exists()) {
             errorCode = 2;
         } else {
-/*            this.vestlusruum = ObjectConversion.loeVestlusruum(vestlusFail);
-            System.out.println(vestlusruum);
-
-            // Lisab kasutaja faili märkme, et ta asub selles vestlusruumis
-            File kasutajaFail = new File("kasutajad" + File.separator + userName + ".txt");
-            Kasutaja kasutaja = ObjectConversion.loeKasutaja(kasutajaFail);
-            ObjectConversion.kirjutaKasutaja(kasutajaFail, kasutaja);
-            kasutaja.addChatroom(name);
-
-            this.vestlusruum.attach(kasutaja); // Kasutaja märgitakse aktiivseks kuulajaks
-*/
-            errorCode = 0;
+            this.vestlusruum = ObjectConversion.loeVestlusruum(vestlusFail);
+            if (vestlusruum.getMembers().contains(userName)) {
+                errorCode = 0;
+            } else {
+                errorCode = 5;
+            }
         }
     }
 
